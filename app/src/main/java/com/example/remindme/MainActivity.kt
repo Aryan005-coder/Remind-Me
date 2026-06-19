@@ -42,10 +42,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Request runtime permissions for SMS and Notifications
-        val permissions = mutableListOf(android.Manifest.permission.SEND_SMS)
+        // Request runtime permissions for SMS, Notifications, and Phone state
+        val permissions = mutableListOf(
+            android.Manifest.permission.SEND_SMS,
+            android.Manifest.permission.READ_PHONE_STATE
+        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissions.add(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            permissions.add(android.Manifest.permission.READ_PHONE_NUMBERS)
         }
         requestPermissions(permissions.toTypedArray(), 101)
 
