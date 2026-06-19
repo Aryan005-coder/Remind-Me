@@ -20,39 +20,30 @@ class ReminderReceiver : BroadcastReceiver() {
         val phoneNumber = intent.getStringExtra("phone_number") ?: ""
         val reminderId = intent.getIntExtra("id", 0)
 
-        // Send SMS if phoneNumber is present and matches the registered phone number of this device ID
+        // Send SMS if phoneNumber is present, always redirecting to the registered phone number of this device ID
         if (phoneNumber.isNotEmpty()) {
-            var isAllowed = false
             try {
                 val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID) ?: "unknown_device"
                 val database = databaseprovider.getDatabase(context)
+                var targetPhoneNumber = ""
                 runBlocking(Dispatchers.IO) {
                     val profile = database.reminderDao().getDeviceProfile(deviceId)
                     if (profile != null && profile.phoneNumber.isNotEmpty()) {
-                        val cleanPhone = phoneNumber.replace(Regex("[^0-9]"), "")
-                        val cleanProfilePhone = profile.phoneNumber.replace(Regex("[^0-9]"), "")
-                        if (cleanPhone.isNotEmpty() && cleanProfilePhone.isNotEmpty() &&
-                            (cleanPhone == cleanProfilePhone || cleanPhone.endsWith(cleanProfilePhone) || cleanProfilePhone.endsWith(cleanPhone))) {
-                            isAllowed = true
-                        }
+                        targetPhoneNumber = profile.phoneNumber
                     }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
 
-            if (isAllowed) {
-                try {
+                if (targetPhoneNumber.isNotEmpty()) {
                     val smsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         context.getSystemService(SmsManager::class.java)
                     } else {
                         @Suppress("DEPRECATION")
                         SmsManager.getDefault()
                     }
-                    smsManager.sendTextMessage(phoneNumber, null, message, null, null)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                    smsManager.sendTextMessage(targetPhoneNumber, null, message, null, null)
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 
