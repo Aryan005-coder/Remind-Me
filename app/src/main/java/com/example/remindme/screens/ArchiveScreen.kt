@@ -415,7 +415,7 @@ private fun ArchiveCard(
                                             modifier = Modifier.size(20.dp),
                                             enabled = !isLocked
                                         )
-                                        Text(
+                                        LinkifiedText(
                                             text = displayText,
                                             fontSize = 15.sp,
                                             fontWeight = FontWeight.Medium,
@@ -427,18 +427,18 @@ private fun ArchiveCard(
                                         )
                                     }
                                 } else {
-                                    Text(
-                                        text = line,
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Medium,
-                                        color = textPrimary,
-                                        lineHeight = 22.sp
-                                    )
+                                     LinkifiedText(
+                                         text = line,
+                                         fontSize = 15.sp,
+                                         fontWeight = FontWeight.Medium,
+                                         color = textPrimary,
+                                         lineHeight = 22.sp
+                                     )
                                 }
                             }
                         }
                     } else {
-                        Text(
+                        LinkifiedText(
                             text = displayedMessage,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Medium,

@@ -74,6 +74,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -117,6 +118,13 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.material.icons.filled.Lock
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.TextStyle
+import android.util.Patterns
+
 
 // ── Adaptive colour palette ────────────────────────────────────────────────
 // All UI colours are resolved at composition time so dark/light mode both
@@ -1966,7 +1974,7 @@ fun TimelineReminderItem(
                                                 modifier = Modifier.size(20.dp),
                                                 enabled = !isLocked
                                             )
-                                            Text(
+                                            LinkifiedText(
                                                 text = displayText,
                                                 fontSize = 15.sp,
                                                 fontWeight = FontWeight.Medium,
@@ -1978,7 +1986,7 @@ fun TimelineReminderItem(
                                             )
                                         }
                                     } else {
-                                        Text(
+                                        LinkifiedText(
                                             text = line,
                                             fontSize = 15.sp,
                                             fontWeight = FontWeight.Medium,
@@ -1989,7 +1997,7 @@ fun TimelineReminderItem(
                                 }
                             }
                         } else {
-                            Text(
+                            LinkifiedText(
                                 text = displayedMessage,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Medium,
@@ -2865,3 +2873,72 @@ fun exportChatsToEmail(
         Toast.makeText(context, "No email app found to send the export!", Toast.LENGTH_LONG).show()
     }
 }
+
+@Composable
+fun LinkifiedText(
+    text: String,
+    fontSize: androidx.compose.ui.unit.TextUnit,
+    fontWeight: FontWeight,
+    color: Color,
+    lineHeight: androidx.compose.ui.unit.TextUnit,
+    style: TextStyle = TextStyle.Default,
+    modifier: Modifier = Modifier
+) {
+    val uriHandler = LocalUriHandler.current
+    var layoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
+    
+    val annotatedString = remember(text, color) {
+        buildAnnotatedString {
+            append(text)
+            val matcher = Patterns.WEB_URL.matcher(text)
+            while (matcher.find()) {
+                val start = matcher.start()
+                val end = matcher.end()
+                addStyle(
+                    style = SpanStyle(
+                        color = Color(0xFF007AFF),
+                        textDecoration = TextDecoration.Underline
+                    ),
+                    start = start,
+                    end = end
+                )
+                addStringAnnotation(
+                    tag = "URL",
+                    annotation = text.substring(start, end),
+                    start = start,
+                    end = end
+                )
+            }
+        }
+    }
+
+    Text(
+        text = annotatedString,
+        fontSize = fontSize,
+        fontWeight = fontWeight,
+        color = color,
+        lineHeight = lineHeight,
+        style = style,
+        onTextLayout = { layoutResult = it },
+        modifier = modifier.pointerInput(annotatedString) {
+            detectTapGestures { offset ->
+                layoutResult?.let { layout ->
+                    val position = layout.getOffsetForPosition(offset)
+                    annotatedString.getStringAnnotations(tag = "URL", start = position, end = position)
+                        .firstOrNull()?.let { annotation ->
+                            var url = annotation.item
+                            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                                url = "https://$url"
+                            }
+                            try {
+                                uriHandler.openUri(url)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                }
+            }
+        }
+    )
+}
+

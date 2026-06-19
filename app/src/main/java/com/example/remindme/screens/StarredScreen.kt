@@ -360,7 +360,7 @@ private fun StarredCard(
                                                 modifier = Modifier.size(20.dp),
                                                 enabled = !isLocked
                                             )
-                                            Text(
+                                            LinkifiedText(
                                                 text = displayText,
                                                 fontSize = 15.sp,
                                                 fontWeight = FontWeight.Medium,
@@ -372,7 +372,7 @@ private fun StarredCard(
                                             )
                                         }
                                     } else {
-                                        Text(
+                                        LinkifiedText(
                                             text = line,
                                             fontSize = 15.sp,
                                             fontWeight = FontWeight.Medium,
@@ -383,7 +383,7 @@ private fun StarredCard(
                                 }
                             }
                         } else {
-                            Text(
+                            LinkifiedText(
                                 text = displayedMessage,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Medium,
