@@ -413,7 +413,12 @@ private fun StarredCard(
                 Spacer(modifier = Modifier.height(10.dp))
                 UriImage(
                     uriString = reminder.imageUri,
-                    modifier = Modifier.clip(RoundedCornerShape(10.dp)),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .combinedClickable(
+                            onClick = {},
+                            onLongClick = { showActionDialog = true }
+                        ),
                     contentScale = ContentScale.Crop,
                     enforceAspectRatio = true
                 )
@@ -466,7 +471,7 @@ private fun StarredCard(
                         Icon(
                             imageVector = getCategoryIcon(reminder.tag ?: "", customCategories),
                             contentDescription = reminder.tag ?: "Category",
-                            tint = tagColor,
+                            tint = if (dark) Color(0xFF8E8E93) else Color.Black,
                             modifier = Modifier.size(16.dp)
                         )
                     }

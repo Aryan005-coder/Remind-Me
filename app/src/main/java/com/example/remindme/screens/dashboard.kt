@@ -2028,7 +2028,10 @@ fun TimelineReminderItem(
                         uriString = reminder.imageUri,
                         modifier = Modifier
                             .clip(RoundedCornerShape(10.dp))
-                            .clickable { onImageClick(reminder.imageUri) },
+                            .combinedClickable(
+                                onClick = { onImageClick(reminder.imageUri) },
+                                onLongClick = { showActionDialog = true }
+                            ),
                         contentScale = ContentScale.Crop,
                         enforceAspectRatio = true
                     )
@@ -2063,7 +2066,7 @@ fun TimelineReminderItem(
                         Icon(
                             imageVector = getCategoryIcon(reminder.tag ?: "", customCategories),
                             contentDescription = reminder.tag ?: "Category",
-                            tint = tagColor,
+                            tint = if (LocalDarkTheme.current) Color(0xFF8E8E93) else Color.Black,
                             modifier = Modifier.size(16.dp)
                         )
 
