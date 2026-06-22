@@ -70,6 +70,8 @@ fun getActiveAccentColor(theme: String, isDark: Boolean): Color {
         "sky" -> if (isDark) Color(0xFFB3E5FC) else Color(0xFF2C6B9E)
         "lavender" -> if (isDark) Color(0xFFE8AEFF) else Color(0xFF8A5CBA)
         "peach" -> if (isDark) Color(0xFFFFDAC1) else Color(0xFFC97A4A)
+        "coral" -> if (isDark) Color(0xFFFFB3A7) else Color(0xFFD35240)
+        "banana" -> if (isDark) Color(0xFFFFF59D) else Color(0xFFA57D13)
         else -> if (isDark) Color(0xFFF5F5F7) else Color(0xFF09090B)
     }
 }

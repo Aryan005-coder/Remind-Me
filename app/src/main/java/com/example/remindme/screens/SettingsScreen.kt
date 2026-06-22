@@ -266,59 +266,54 @@ fun SettingsScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                     
                     val palettes = listOf(
-                        Triple("default", "Default", if (LocalDarkTheme.current) Color(0xFFF5F5F7) else Color(0xFF09090B)),
-                        Triple("rose", "Rose", if (LocalDarkTheme.current) Color(0xFFFFB7B2) else Color(0xFFD36F8A)),
-                        Triple("mint", "Mint", if (LocalDarkTheme.current) Color(0xFFB5EAD7) else Color(0xFF3B8A75)),
-                        Triple("sky", "Sky", if (LocalDarkTheme.current) Color(0xFFB3E5FC) else Color(0xFF2C6B9E)),
-                        Triple("lavender", "Lavender", if (LocalDarkTheme.current) Color(0xFFE8AEFF) else Color(0xFF8A5CBA)),
-                        Triple("peach", "Peach", if (LocalDarkTheme.current) Color(0xFFFFDAC1) else Color(0xFFC97A4A))
+                        "default" to if (LocalDarkTheme.current) Color(0xFFF5F5F7) else Color(0xFF09090B),
+                        "rose" to if (LocalDarkTheme.current) Color(0xFFFFB7B2) else Color(0xFFD36F8A),
+                        "mint" to if (LocalDarkTheme.current) Color(0xFFB5EAD7) else Color(0xFF3B8A75),
+                        "sky" to if (LocalDarkTheme.current) Color(0xFFB3E5FC) else Color(0xFF2C6B9E),
+                        "lavender" to if (LocalDarkTheme.current) Color(0xFFE8AEFF) else Color(0xFF8A5CBA),
+                        "peach" to if (LocalDarkTheme.current) Color(0xFFFFDAC1) else Color(0xFFC97A4A),
+                        "coral" to if (LocalDarkTheme.current) Color(0xFFFFB3A7) else Color(0xFFD35240),
+                        "banana" to if (LocalDarkTheme.current) Color(0xFFFFF59D) else Color(0xFFA57D13)
                     )
 
-                    val chunkedPalettes = palettes.chunked(3)
+                    val chunkedPalettes = palettes.chunked(4)
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         chunkedPalettes.forEach { rowPalettes ->
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                rowPalettes.forEach { (value, label, color) ->
+                                rowPalettes.forEach { (value, color) ->
                                     val isSelected = accentColorState == value
-                                    val border = if (isSelected) activeAccentColor else c.borderColor
                                     Box(
                                         modifier = Modifier
-                                            .weight(1f)
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .background(c.screenBackground)
-                                            .border(if (isSelected) 2.dp else 1.dp, border, RoundedCornerShape(10.dp))
-                                            .clickable { viewModel.setAccentColor(value) }
-                                            .padding(vertical = 10.dp, horizontal = 6.dp),
+                                            .size(48.dp)
+                                            .clip(CircleShape)
+                                            .clickable { viewModel.setAccentColor(value) },
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                        Box(
+                                            modifier = Modifier
+                                                .size(if (isSelected) 40.dp else 32.dp)
+                                                .border(
+                                                    width = if (isSelected) 2.dp else 1.dp,
+                                                    color = if (isSelected) activeAccentColor else c.borderColor,
+                                                    shape = CircleShape
+                                                )
+                                                .padding(if (isSelected) 4.dp else 0.dp)
+                                                .clip(CircleShape)
                                         ) {
                                             Box(
                                                 modifier = Modifier
-                                                    .size(14.dp)
+                                                    .fillMaxSize()
                                                     .clip(CircleShape)
                                                     .background(color)
-                                                    .border(0.5.dp, c.borderColor.copy(alpha = 0.5f), CircleShape)
-                                            )
-                                            Text(
-                                                text = label,
-                                                fontSize = 12.sp,
-                                                fontWeight = FontWeight.SemiBold,
-                                                color = if (isSelected) c.textPrimary else c.textMuted
                                             )
                                         }
-                                    }
-                                }
-                                if (rowPalettes.size < 3) {
-                                    repeat(3 - rowPalettes.size) {
-                                        Spacer(modifier = Modifier.weight(1f))
                                     }
                                 }
                             }
