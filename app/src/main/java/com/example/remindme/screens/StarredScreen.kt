@@ -471,7 +471,7 @@ private fun StarredCard(
                         Icon(
                             imageVector = getCategoryIcon(reminder.tag ?: "", customCategories),
                             contentDescription = reminder.tag ?: "Category",
-                            tint = if (dark) Color(0xFF8E8E93) else Color.Black,
+                            tint = Color(0xFF8E8E93),
                             modifier = Modifier.size(16.dp)
                         )
                     }

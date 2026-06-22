@@ -158,7 +158,7 @@ fun PrivacyPolicyScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "You can delete individual reminders at any time from the main timeline, which immediately clears all associated records. Uninstalling the app completely purges the SQLite database database files from your device.",
+                        text = "You can delete individual reminders at any time from the main timeline. Any information associated with a deleted reminder is removed immediately. Uninstalling the application will remove all app-related data stored on your device.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp

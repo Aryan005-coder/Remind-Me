@@ -1036,7 +1036,7 @@ fun DashboardScreen(
                                     }
                                 } else {
                                     Row(
-                                        verticalAlignment = Alignment.Bottom,
+                                        verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
                                         // Expandable text area — uses TextFieldValue so cursor
@@ -1071,7 +1071,7 @@ fun DashboardScreen(
                                                 .weight(1f)
                                                 .padding(end = 8.dp),
                                             decorationBox = { innerTextField ->
-                                                Box {
+                                                Box(contentAlignment = Alignment.CenterStart) {
                                                     if (message.text.isEmpty()) {
                                                         Text(
                                                             text = if (isListMode) "Tap Enter to add items..." else "Write a reminder...",
@@ -2074,7 +2074,7 @@ fun TimelineReminderItem(
                         Icon(
                             imageVector = getCategoryIcon(reminder.tag ?: "", customCategories),
                             contentDescription = reminder.tag ?: "Category",
-                            tint = if (LocalDarkTheme.current) Color(0xFF8E8E93) else Color.Black,
+                            tint = Color(0xFF8E8E93),
                             modifier = Modifier.size(16.dp)
                         )
 

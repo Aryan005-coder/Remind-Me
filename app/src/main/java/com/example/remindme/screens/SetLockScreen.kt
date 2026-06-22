@@ -464,7 +464,7 @@ fun KeypadButton(
                 text = "Forgot?",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF007AFF)
+                color = Color(0xFFFF3B30)
             )
         } else {
             Text(
