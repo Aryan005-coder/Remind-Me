@@ -26,6 +26,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import com.example.remindme.ui.theme.LocalDarkTheme
 import com.example.remindme.ui.theme.LocalLanguage
 import com.example.remindme.ui.theme.AppTranslations
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
 
 data class ProfileColors(
     val screenBackground: Color,
@@ -161,7 +166,7 @@ fun ProfileScreen(
             colors = CardDefaults.cardColors(containerColor = c.cardBackground),
             border = BorderStroke(1.dp, c.borderColor)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                 Text(
                     text = AppTranslations.getString("recipient_name", lang),
                     fontSize = 11.sp,
@@ -169,22 +174,32 @@ fun ProfileScreen(
                     color = c.accentBlack,
                     letterSpacing = 0.5.sp
                 )
-                TextField(
+                BasicTextField(
                     value = inputName,
                     onValueChange = { inputName = it },
-                    placeholder = { Text(AppTranslations.getString("name_placeholder", lang), color = c.textMuted) },
+                    textStyle = TextStyle(
+                        color = c.textPrimary,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    cursorBrush = SolidColor(c.accentBlack),
+                    singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 4.dp),
-                    singleLine = true,
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = c.textPrimary,
-                        unfocusedTextColor = c.textPrimary,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    )
+                        .padding(top = 6.dp, bottom = 4.dp),
+                    decorationBox = { innerTextField ->
+                        Box(contentAlignment = Alignment.CenterStart) {
+                            if (inputName.isEmpty()) {
+                                Text(
+                                    text = AppTranslations.getString("name_placeholder", lang),
+                                    color = c.textMuted,
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                            innerTextField()
+                        }
+                    }
                 )
             }
         }
@@ -198,7 +213,7 @@ fun ProfileScreen(
             colors = CardDefaults.cardColors(containerColor = c.cardBackground),
             border = BorderStroke(1.dp, c.borderColor)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                 Text(
                     text = AppTranslations.getString("phone_number", lang),
                     fontSize = 11.sp,
@@ -206,22 +221,33 @@ fun ProfileScreen(
                     color = c.accentBlack,
                     letterSpacing = 0.5.sp
                 )
-                TextField(
+                BasicTextField(
                     value = inputPhone,
                     onValueChange = { inputPhone = it },
-                    placeholder = { Text(AppTranslations.getString("phone_placeholder", lang), color = c.textMuted) },
+                    textStyle = TextStyle(
+                        color = c.textPrimary,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    cursorBrush = SolidColor(c.accentBlack),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 4.dp),
-                    singleLine = true,
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = c.textPrimary,
-                        unfocusedTextColor = c.textPrimary,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    )
+                        .padding(top = 6.dp, bottom = 4.dp),
+                    decorationBox = { innerTextField ->
+                        Box(contentAlignment = Alignment.CenterStart) {
+                            if (inputPhone.isEmpty()) {
+                                Text(
+                                    text = AppTranslations.getString("phone_placeholder", lang),
+                                    color = c.textMuted,
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                            innerTextField()
+                        }
+                    }
                 )
             }
         }
