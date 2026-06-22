@@ -272,7 +272,7 @@ fun SettingsScreen(
                         "sky" to if (LocalDarkTheme.current) Color(0xFFB3E5FC) else Color(0xFF2C6B9E),
                         "lavender" to if (LocalDarkTheme.current) Color(0xFFE8AEFF) else Color(0xFF8A5CBA),
                         "peach" to if (LocalDarkTheme.current) Color(0xFFFFDAC1) else Color(0xFFC97A4A),
-                        "coral" to if (LocalDarkTheme.current) Color(0xFFFFB3A7) else Color(0xFFD35240),
+                        "coral" to if (LocalDarkTheme.current) Color(0xFFFF8A65) else Color(0xFFE25B45),
                         "banana" to if (LocalDarkTheme.current) Color(0xFFFFF59D) else Color(0xFFA57D13)
                     )
 
