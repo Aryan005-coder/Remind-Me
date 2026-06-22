@@ -276,45 +276,37 @@ fun SettingsScreen(
                         "banana" to if (LocalDarkTheme.current) Color(0xFFFFF59D) else Color(0xFFA57D13)
                     )
 
-                    val chunkedPalettes = palettes.chunked(4)
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxWidth()
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        chunkedPalettes.forEach { rowPalettes ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceEvenly,
-                                verticalAlignment = Alignment.CenterVertically
+                        palettes.forEach { (value, color) ->
+                            val isSelected = accentColorState == value
+                            Box(
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clip(CircleShape)
+                                    .clickable { viewModel.setAccentColor(value) },
+                                contentAlignment = Alignment.Center
                             ) {
-                                rowPalettes.forEach { (value, color) ->
-                                    val isSelected = accentColorState == value
+                                Box(
+                                    modifier = Modifier
+                                        .size(if (isSelected) 32.dp else 24.dp)
+                                        .border(
+                                            width = if (isSelected) 2.dp else 1.dp,
+                                            color = if (isSelected) activeAccentColor else c.borderColor,
+                                            shape = CircleShape
+                                        )
+                                        .padding(if (isSelected) 3.dp else 0.dp)
+                                        .clip(CircleShape)
+                                ) {
                                     Box(
                                         modifier = Modifier
-                                            .size(48.dp)
+                                            .fillMaxSize()
                                             .clip(CircleShape)
-                                            .clickable { viewModel.setAccentColor(value) },
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(if (isSelected) 40.dp else 32.dp)
-                                                .border(
-                                                    width = if (isSelected) 2.dp else 1.dp,
-                                                    color = if (isSelected) activeAccentColor else c.borderColor,
-                                                    shape = CircleShape
-                                                )
-                                                .padding(if (isSelected) 4.dp else 0.dp)
-                                                .clip(CircleShape)
-                                        ) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxSize()
-                                                    .clip(CircleShape)
-                                                    .background(color)
-                                            )
-                                        }
-                                    }
+                                            .background(color)
+                                    )
                                 }
                             }
                         }
