@@ -161,39 +161,55 @@ fun SettingsScreen(
         )
     )
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = titleText, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = c.textPrimary, modifier = Modifier.padding(start = 12.dp)) },
-                navigationIcon = {
-                    IconButton(
-                        onClick = onNavigateBack,
-                        modifier = Modifier
-                            .padding(start = 12.dp)
-                            .size(44.dp)
-                            .background(c.cardBackground, CircleShape)
-                            .border(1.dp, c.borderColor, CircleShape)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ChevronLeft,
-                            contentDescription = backText,
-                            tint = c.accentBlack,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screenBackground)
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(c.screenBackground)
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+    ) {
+        // Title Row: Back chevron | Title | Spacer to center
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Back button
+            IconButton(
+                onClick = onNavigateBack,
+                modifier = Modifier
+                    .size(44.dp)
+                    .background(c.cardBackground, CircleShape)
+                    .border(1.dp, c.borderColor, CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ChevronLeft,
+                    contentDescription = backText,
+                    tint = c.accentBlack,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
+            Text(
+                text = titleText,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Black,
+                color = c.textPrimary,
+                letterSpacing = (-1).sp
             )
-        },
-        containerColor = c.screenBackground,
-        modifier = modifier.fillMaxSize()
-    ) { paddingValues ->
+
+            // Empty spacer to perfectly center the title
+            Spacer(modifier = Modifier.size(44.dp))
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 16.dp)
+                .padding(vertical = 16.dp)
         ) {
             // Theme selection Card
             Card(
