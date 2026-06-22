@@ -20,6 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.TextStyle
 
 data class PrivacyPolicyColors(
     val screenBackground: Color,
@@ -124,15 +131,17 @@ fun PrivacyPolicyScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "To serve its core function, the app requests the following system privileges:\n" +
-                               "• SEND_SMS: Used exclusively to dispatch automated SMS reminder alerts to your designated recipient at the precise scheduled times.\n" +
-                               "• SCHEDULE_EXACT_ALARM: Used to schedule Android System Alarms that wake the app to dispatch notifications at your requested time.\n" +
-                               "• POST_NOTIFICATIONS (Android 13+): Used to show scheduled notifications on your system dashboard.\n" +
-                               "• Read External Storage / Open Document: Used to retrieve and show image attachments inside your reminder composer logs.",
+                        text = "To provide its core functionality, the application may request access to certain device features and permissions.\n\n" +
+                                "• Messaging Services: Used to send reminder messages that have been explicitly scheduled by the user.\n\n" +
+                                "• Scheduling and Background Processing: Used to ensure reminders and alerts are delivered at the time selected by the user, even when the application is not actively open.\n\n" +
+                                "• Notifications: Used to display reminder alerts and other important application-related information.\n\n" +
+                                "• Photos, Media, and Files: Used to allow users to select, attach, view, and manage images associated with reminders.\n\n" +
+                                "Information accessed through these permissions is used solely for providing the application's features and is not sold, rented, traded, or used for advertising purposes. Users may revoke permissions at any time through their device settings, though certain features may become unavailable.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp
                     )
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
@@ -162,6 +171,51 @@ fun PrivacyPolicyScreen(
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = c.cardBackground),
+                border = BorderStroke(1.dp, c.borderColor)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
+                ) {
+                    val uriHandler = LocalUriHandler.current
+                    val annotatedText = buildAnnotatedString {
+                        append("To know more ")
+                        pushStringAnnotation(tag = "URL", annotation = "https://docs.google.com/document/d/13N_c2Z4tC4ePjV6W1N24Qn_gQh8-tG4B3T7wXJ7C8gM/edit?usp=sharing")
+                        withStyle(style = SpanStyle(color = Color(0xFF007AFF), textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold)) {
+                            append("click here")
+                        }
+                        pop()
+                    }
+
+                    ClickableText(
+                        text = annotatedText,
+                        style = TextStyle(
+                            color = c.textPrimary,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        ),
+                        onClick = { offset ->
+                            annotatedText.getStringAnnotations(tag = "URL", start = offset, end = offset)
+                                .firstOrNull()?.let { annotation ->
+                                    try {
+                                        uriHandler.openUri(annotation.item)
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }
+                        }
                     )
                 }
             }

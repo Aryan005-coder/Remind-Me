@@ -166,23 +166,23 @@ fun AboutUsScreen(
                     )
 
                     Text(
-                        text = "This application was developed by Aryan Singh under the guidance and mentorship of White Hawk.",
+                        text = "This application was developed by Aryan Singh under the guidance and of White Hawk.",
                         fontSize = 14.sp,
-                        color = c.textPrimary,
+                        color = c.textMuted,
                         lineHeight = 20.sp
                     )
 
                     Text(
                         text = "The primary purpose of this application is to provide a useful and accessible service to its users. This project is a non-profit initiative and has been created solely for educational, developmental, and public-benefit purposes. No financial gain, commercial profit, or monetary benefit is intended or sought through the development or distribution of this application.",
                         fontSize = 14.sp,
-                        color = c.textPrimary,
+                        color = c.textMuted,
                         lineHeight = 20.sp
                     )
 
                     Text(
                         text = "All efforts have been made to ensure the application is reliable and user-friendly. Feedback and suggestions for improvement are always welcome and will help in enhancing the overall user experience.",
                         fontSize = 14.sp,
-                        color = c.textPrimary,
+                        color = c.textMuted,
                         lineHeight = 20.sp
                     )
 
