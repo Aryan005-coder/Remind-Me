@@ -25,6 +25,8 @@ import com.example.remindme.ui.DashboardViewModel
 import com.example.remindme.ui.theme.LocalDarkTheme
 import com.example.remindme.ui.theme.LocalLanguage
 import com.example.remindme.ui.theme.AppTranslations
+import com.example.remindme.ui.theme.getActiveAccentColor
+import com.example.remindme.ui.theme.getContrastTextColor
 import androidx.compose.ui.platform.LocalContext
 import android.widget.Toast
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -114,6 +116,8 @@ fun SettingsScreen(
     val themeState by viewModel.theme.collectAsState()
     val langState by viewModel.language.collectAsState()
     val fontState by viewModel.fontSize.collectAsState()
+    val accentColorState by viewModel.accentColor.collectAsState()
+    val activeAccentColor = getActiveAccentColor(accentColorState, LocalDarkTheme.current)
 
     val titleText = AppTranslations.getString("settings", langState)
     val backText = AppTranslations.getString("back", langState)
@@ -217,9 +221,9 @@ fun SettingsScreen(
                         options.forEach { value ->
                             val label = themeLabels[value]?.get(langState) ?: themeLabels[value]?.get("en") ?: value
                             val isSelected = themeState == value
-                            val bg = if (isSelected) c.accentBlack else c.screenBackground
-                            val text = if (isSelected) c.screenBackground else c.textMuted
-                            val border = if (isSelected) c.accentBlack else c.borderColor
+                            val bg = if (isSelected) activeAccentColor else c.screenBackground
+                            val text = if (isSelected) getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, c.screenBackground) else c.textMuted
+                            val border = if (isSelected) activeAccentColor else c.borderColor
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
@@ -236,6 +240,87 @@ fun SettingsScreen(
                                     fontWeight = FontWeight.SemiBold,
                                     color = text
                                 )
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Pastel Color Palette Selection Card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = c.cardBackground),
+                border = BorderStroke(1.dp, c.borderColor)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = "APP ACCENT COLOR",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = c.textMuted,
+                        letterSpacing = 0.5.sp
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    val palettes = listOf(
+                        Triple("default", "Default", if (LocalDarkTheme.current) Color(0xFFF5F5F7) else Color(0xFF09090B)),
+                        Triple("rose", "Rose", if (LocalDarkTheme.current) Color(0xFFFFB7B2) else Color(0xFFD36F8A)),
+                        Triple("mint", "Mint", if (LocalDarkTheme.current) Color(0xFFB5EAD7) else Color(0xFF3B8A75)),
+                        Triple("sky", "Sky", if (LocalDarkTheme.current) Color(0xFFB3E5FC) else Color(0xFF2C6B9E)),
+                        Triple("lavender", "Lavender", if (LocalDarkTheme.current) Color(0xFFE8AEFF) else Color(0xFF8A5CBA)),
+                        Triple("peach", "Peach", if (LocalDarkTheme.current) Color(0xFFFFDAC1) else Color(0xFFC97A4A))
+                    )
+
+                    val chunkedPalettes = palettes.chunked(3)
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        chunkedPalettes.forEach { rowPalettes ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                rowPalettes.forEach { (value, label, color) ->
+                                    val isSelected = accentColorState == value
+                                    val border = if (isSelected) activeAccentColor else c.borderColor
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clip(RoundedCornerShape(10.dp))
+                                            .background(c.screenBackground)
+                                            .border(if (isSelected) 2.dp else 1.dp, border, RoundedCornerShape(10.dp))
+                                            .clickable { viewModel.setAccentColor(value) }
+                                            .padding(vertical = 10.dp, horizontal = 6.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(14.dp)
+                                                    .clip(CircleShape)
+                                                    .background(color)
+                                                    .border(0.5.dp, c.borderColor.copy(alpha = 0.5f), CircleShape)
+                                            )
+                                            Text(
+                                                text = label,
+                                                fontSize = 12.sp,
+                                                fontWeight = FontWeight.SemiBold,
+                                                color = if (isSelected) c.textPrimary else c.textMuted
+                                            )
+                                        }
+                                    }
+                                }
+                                if (rowPalettes.size < 3) {
+                                    repeat(3 - rowPalettes.size) {
+                                        Spacer(modifier = Modifier.weight(1f))
+                                    }
+                                }
                             }
                         }
                     }
@@ -284,9 +369,9 @@ fun SettingsScreen(
                             ) {
                                 rowOptions.forEach { (value, label) ->
                                     val isSelected = langState == value
-                                    val bg = if (isSelected) c.accentBlack else c.screenBackground
-                                    val text = if (isSelected) c.screenBackground else c.textMuted
-                                    val border = if (isSelected) c.accentBlack else c.borderColor
+                                    val bg = if (isSelected) activeAccentColor else c.screenBackground
+                                    val text = if (isSelected) getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, c.screenBackground) else c.textMuted
+                                    val border = if (isSelected) activeAccentColor else c.borderColor
                                     Box(
                                         modifier = Modifier
                                             .weight(1f)
@@ -342,9 +427,9 @@ fun SettingsScreen(
                         options.forEach { value ->
                             val label = fontLabels[value]?.get(langState) ?: fontLabels[value]?.get("en") ?: value
                             val isSelected = fontState == value
-                            val bg = if (isSelected) c.accentBlack else c.screenBackground
-                            val text = if (isSelected) c.screenBackground else c.textMuted
-                            val border = if (isSelected) c.accentBlack else c.borderColor
+                            val bg = if (isSelected) activeAccentColor else c.screenBackground
+                            val text = if (isSelected) getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, c.screenBackground) else c.textMuted
+                            val border = if (isSelected) activeAccentColor else c.borderColor
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
@@ -407,7 +492,7 @@ fun SettingsScreen(
                             text = pinStatus,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (!isPinSet.isNullOrEmpty()) c.accentBlack else c.textMuted
+                            color = if (!isPinSet.isNullOrEmpty()) activeAccentColor else c.textMuted
                         )
                     }
                 }
@@ -461,7 +546,7 @@ fun SettingsScreen(
                             Icon(
                                 imageVector = IconExport,
                                 contentDescription = "Export Chats",
-                                tint = c.accentBlack,
+                                tint = activeAccentColor,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -496,7 +581,7 @@ fun SettingsScreen(
                             text = emailStatus,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (!exportEmail.isNullOrEmpty()) c.accentBlack else c.textMuted
+                            color = if (!exportEmail.isNullOrEmpty()) activeAccentColor else c.textMuted
                         )
                     }
                 }
@@ -513,7 +598,7 @@ fun SettingsScreen(
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text("Enter your Gmail address where your exported reminders will be sent:", color = c.textMuted, fontSize = 14.sp)
                             if (!exportEmail.isNullOrEmpty()) {
-                                Text("Currently configured: ${exportEmail!!}", color = c.accentBlack, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text("Currently configured: ${exportEmail!!}", color = activeAccentColor, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                             }
                             OutlinedTextField(
                                 value = emailInput,
@@ -528,7 +613,7 @@ fun SettingsScreen(
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedTextColor = c.textPrimary,
                                     unfocusedTextColor = c.textPrimary,
-                                    focusedBorderColor = c.accentBlack,
+                                    focusedBorderColor = activeAccentColor,
                                     unfocusedBorderColor = c.borderColor,
                                     focusedContainerColor = Color.Transparent,
                                     unfocusedContainerColor = Color.Transparent
@@ -556,7 +641,7 @@ fun SettingsScreen(
                                 }
                             }
                         ) {
-                            Text("Save", color = c.accentBlack, fontWeight = FontWeight.Bold)
+                            Text("Save", color = activeAccentColor, fontWeight = FontWeight.Bold)
                         }
                     },
                     dismissButton = {

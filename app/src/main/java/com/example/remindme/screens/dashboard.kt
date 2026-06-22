@@ -113,6 +113,8 @@ import com.example.remindme.ui.SettingsViewModel
 import com.example.remindme.ui.theme.LocalDarkTheme
 import com.example.remindme.ui.theme.LocalLanguage
 import com.example.remindme.ui.theme.AppTranslations
+import com.example.remindme.ui.theme.getActiveAccentColor
+import com.example.remindme.ui.theme.getContrastTextColor
 import com.example.remindme.screens.PinVerificationDialog
 import androidx.compose.ui.draw.blur
 import androidx.compose.material.icons.filled.Lock
@@ -146,17 +148,18 @@ data class DashboardColors(
 )
 
 @Composable
-fun rememberDashboardColors(): DashboardColors {
+fun rememberDashboardColors(accentColor: String): DashboardColors {
     val dark = LocalDarkTheme.current
+    val activeAccent = getActiveAccentColor(accentColor, dark)
     return if (dark) {
         DashboardColors(
             screenBackground  = Color(0xFF0D0D0F),   // near-black grouped background
             cardBackground    = Color(0xFF1C1C1E),   // iOS dark card
-            accentPrimary     = Color(0xFFF5F5F7),   // almost-white accent
+            accentPrimary     = activeAccent,   // dynamic pastel accent
             textPrimary       = Color(0xFFF5F5F7),
             textMuted         = Color(0xFF8E8E93),
             borderColor       = Color(0xFF2C2C2E),   // dark separator
-            colorGeneral      = Color(0xFFF5F5F7),
+            colorGeneral      = activeAccent,
             colorShopping     = Color(0xFFD4D4D8),
             colorPlaces       = Color(0xFFA1A1AA),
             colorWork         = Color(0xFF71717A),
@@ -166,11 +169,11 @@ fun rememberDashboardColors(): DashboardColors {
         DashboardColors(
             screenBackground  = Color(0xFFF2F2F7),   // iOS light grouped background
             cardBackground    = Color(0xFFFFFFFF),
-            accentPrimary     = Color(0xFF09090B),   // pitch black
+            accentPrimary     = activeAccent,   // dynamic pastel accent
             textPrimary       = Color(0xFF000000),
             textMuted         = Color(0xFF8E8E93),
             borderColor       = Color(0xFFE5E5EA),
-            colorGeneral      = Color(0xFF09090B),
+            colorGeneral      = activeAccent,
             colorShopping     = Color(0xFF27272A),
             colorPlaces       = Color(0xFF3F3F46),
             colorWork         = Color(0xFF52525B),
@@ -230,8 +233,9 @@ fun DashboardScreen(
 ) {
     val lockPin by settingsViewModel.lockPin.collectAsState()
     var reminderToVerifyPin by remember { mutableStateOf<RemainderEntity?>(null) }
+    val accentColorState by settingsViewModel.accentColor.collectAsState()
 
-    val c = rememberDashboardColors()
+    val c = rememberDashboardColors(accentColorState)
     val lang = LocalLanguage.current
 
     val context = LocalContext.current
@@ -567,7 +571,7 @@ fun DashboardScreen(
                         val isCustom = category !in defaultTags && category != "All"
 
                         val chipBg = if (isSelected) c.accentPrimary else c.cardBackground
-                        val chipText = if (isSelected) c.screenBackground else c.textPrimary
+                        val chipText = if (isSelected) getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, Color.White) else c.textPrimary
                         val chipBorder = if (isSelected) c.accentPrimary else c.borderColor
 
                         Row(
@@ -818,7 +822,7 @@ fun DashboardScreen(
                                 val tagColor = getCategoryColor(tag, c, customCategories)
 
                                 val chipBg = if (isSelected) c.accentPrimary else c.screenBackground
-                                val chipText = if (isSelected) c.screenBackground else c.textPrimary
+                                val chipText = if (isSelected) getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, Color.White) else c.textPrimary
                                 val chipBorder = if (isSelected) c.accentPrimary else c.borderColor
 
                                 Row(
@@ -1212,7 +1216,7 @@ fun DashboardScreen(
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.Send,
                                     contentDescription = "Send",
-                                    tint = if (isEnabled) c.screenBackground else c.textMuted,
+                                    tint = if (isEnabled) getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, Color.White) else c.textMuted,
                                     modifier = Modifier.size(16.dp)
                                 )
                             }
@@ -1510,7 +1514,7 @@ fun DashboardScreen(
                                                 Icon(
                                                     imageVector = iconVec,
                                                     contentDescription = name,
-                                                    tint = if (isSelected) c.screenBackground else c.textPrimary,
+                                                    tint = if (isSelected) getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, Color.White) else c.textPrimary,
                                                     modifier = Modifier.size(20.dp)
                                                 )
                                             }
@@ -1761,6 +1765,7 @@ fun DashboardScreen(
             if (reminderToVerifyPin != null) {
                 PinVerificationDialog(
                     correctPin = lockPin ?: "",
+                    accentColor = accentColorState,
                     onDismiss = { reminderToVerifyPin = null },
                     onCorrectPin = {
                         val reminder = reminderToVerifyPin!!

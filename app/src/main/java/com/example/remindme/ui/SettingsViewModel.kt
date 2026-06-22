@@ -23,6 +23,14 @@ class SettingsViewModel(context: Context) : ViewModel() {
     private val _lockPin = MutableStateFlow(sharedPrefs.getString("app_lock_pin", null))
     val lockPin: StateFlow<String?> = _lockPin.asStateFlow()
 
+    private val _accentColor = MutableStateFlow(sharedPrefs.getString("app_accent_color", "default") ?: "default")
+    val accentColor: StateFlow<String> = _accentColor.asStateFlow()
+
+    fun setAccentColor(color: String) {
+        sharedPrefs.edit().putString("app_accent_color", color).apply()
+        _accentColor.value = color
+    }
+
     private val _exportEmail = MutableStateFlow(sharedPrefs.getString("app_export_email", null))
     val exportEmail: StateFlow<String?> = _exportEmail.asStateFlow()
 

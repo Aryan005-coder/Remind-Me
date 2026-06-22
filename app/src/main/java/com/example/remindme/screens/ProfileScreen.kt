@@ -26,6 +26,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import com.example.remindme.ui.theme.LocalDarkTheme
 import com.example.remindme.ui.theme.LocalLanguage
 import com.example.remindme.ui.theme.AppTranslations
+import com.example.remindme.ui.SettingsViewModel
+import com.example.remindme.ui.theme.getActiveAccentColor
+import com.example.remindme.ui.theme.getContrastTextColor
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,13 +45,14 @@ data class ProfileColors(
 )
 
 @Composable
-fun rememberProfileColors(): ProfileColors {
+fun rememberProfileColors(accentColor: String): ProfileColors {
     val dark = LocalDarkTheme.current
+    val activeAccent = getActiveAccentColor(accentColor, dark)
     return if (dark) {
         ProfileColors(
             screenBackground = Color(0xFF0D0D0F),
             cardBackground = Color(0xFF1C1C1E),
-            accentBlack = Color(0xFFF5F5F7),
+            accentBlack = activeAccent,
             textPrimary = Color(0xFFF5F5F7),
             textMuted = Color(0xFF8E8E93),
             borderColor = Color(0xFF2C2C2E)
@@ -57,7 +61,7 @@ fun rememberProfileColors(): ProfileColors {
         ProfileColors(
             screenBackground = Color(0xFFF2F2F7),
             cardBackground = Color(0xFFFFFFFF),
-            accentBlack = Color(0xFF09090B),
+            accentBlack = activeAccent,
             textPrimary = Color(0xFF000000),
             textMuted = Color(0xFF8E8E93),
             borderColor = Color(0xFFE5E5EA)
@@ -68,6 +72,7 @@ fun rememberProfileColors(): ProfileColors {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
+    settingsViewModel: SettingsViewModel,
     savedName: String,
     savedPhone: String,
     onSave: (String, String) -> Unit,
@@ -80,7 +85,8 @@ fun ProfileScreen(
     onNavigateToArchive: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val c = rememberProfileColors()
+    val accentColorState by settingsViewModel.accentColor.collectAsState()
+    val c = rememberProfileColors(accentColorState)
     val lang = LocalLanguage.current
 
     var inputName by remember { mutableStateOf(savedName) }
@@ -271,7 +277,7 @@ fun ProfileScreen(
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = c.accentBlack,
-                contentColor = c.screenBackground
+                contentColor = getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, Color.White)
             ),
             shape = RoundedCornerShape(14.dp),
             modifier = Modifier
@@ -282,7 +288,7 @@ fun ProfileScreen(
                 text = AppTranslations.getString("save_settings", lang),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                color = c.screenBackground
+                color = getContrastTextColor(accentColorState, LocalDarkTheme.current, c.screenBackground, Color.White)
             )
         }
 

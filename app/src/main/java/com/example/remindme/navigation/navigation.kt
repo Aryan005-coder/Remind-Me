@@ -75,6 +75,7 @@ fun AppNavigation(
             }
             composable(Screen.Profile.route) {
                 ProfileScreen(
+                    settingsViewModel = settingsViewModel,
                     savedName = savedName,
                     savedPhone = savedPhone,
                     onSave = { name, phone ->

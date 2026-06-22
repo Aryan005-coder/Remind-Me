@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -60,4 +61,22 @@ fun RemindMeTheme(
         typography = Typography,
         content = content
     )
+}
+
+fun getActiveAccentColor(theme: String, isDark: Boolean): Color {
+    return when (theme) {
+        "rose" -> if (isDark) Color(0xFFFFB7B2) else Color(0xFFD36F8A)
+        "mint" -> if (isDark) Color(0xFFB5EAD7) else Color(0xFF3B8A75)
+        "sky" -> if (isDark) Color(0xFFB3E5FC) else Color(0xFF2C6B9E)
+        "lavender" -> if (isDark) Color(0xFFE8AEFF) else Color(0xFF8A5CBA)
+        "peach" -> if (isDark) Color(0xFFFFDAC1) else Color(0xFFC97A4A)
+        else -> if (isDark) Color(0xFFF5F5F7) else Color(0xFF09090B)
+    }
+}
+
+fun getContrastTextColor(theme: String, isDark: Boolean, fallbackTextForDarkBg: Color, fallbackTextForLightBg: Color): Color {
+    if (theme == "default") {
+        return if (isDark) fallbackTextForDarkBg else fallbackTextForLightBg
+    }
+    return if (isDark) Color(0xFF0D0D0F) else Color.White
 }

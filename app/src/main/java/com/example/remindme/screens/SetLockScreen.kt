@@ -25,6 +25,8 @@ import com.example.remindme.ui.SettingsViewModel
 import com.example.remindme.ui.theme.LocalDarkTheme
 import com.example.remindme.ui.theme.LocalLanguage
 import com.example.remindme.ui.theme.AppTranslations
+import com.example.remindme.ui.theme.getActiveAccentColor
+import com.example.remindme.ui.theme.getContrastTextColor
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,17 +44,18 @@ data class SetLockColors(
 )
 
 @Composable
-fun rememberSetLockColors(): SetLockColors {
+fun rememberSetLockColors(accentColor: String): SetLockColors {
     val dark = LocalDarkTheme.current
+    val activeAccent = getActiveAccentColor(accentColor, dark)
     return if (dark) {
         SetLockColors(
             screenBackground = Color(0xFF0D0D0F),
             cardBackground = Color(0xFF1C1C1E),
-            accentBlack = Color(0xFFF5F5F7),
+            accentBlack = activeAccent,
             textPrimary = Color(0xFFF5F5F7),
             textMuted = Color(0xFF8E8E93),
             borderColor = Color(0xFF2C2C2E),
-            dotSelected = Color(0xFFF5F5F7),
+            dotSelected = activeAccent,
             dotUnselected = Color(0xFF2C2C2E),
             errorColor = Color(0xFFFF453A)
         )
@@ -60,11 +63,11 @@ fun rememberSetLockColors(): SetLockColors {
         SetLockColors(
             screenBackground = Color(0xFFF2F2F7),
             cardBackground = Color(0xFFFFFFFF),
-            accentBlack = Color(0xFF09090B),
+            accentBlack = activeAccent,
             textPrimary = Color(0xFF000000),
             textMuted = Color(0xFF8E8E93),
             borderColor = Color(0xFFE5E5EA),
-            dotSelected = Color(0xFF09090B),
+            dotSelected = activeAccent,
             dotUnselected = Color(0xFFE5E5EA),
             errorColor = Color(0xFFFF3B30)
         )
@@ -85,7 +88,8 @@ fun SetLockScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val c = rememberSetLockColors()
+    val accentColorState by viewModel.accentColor.collectAsState()
+    val c = rememberSetLockColors(accentColorState)
     val context = LocalContext.current
     val langState by viewModel.language.collectAsState()
     val currentPin by viewModel.lockPin.collectAsState()
@@ -417,7 +421,7 @@ fun SetLockScreen(
                         }
                     }
                 ) {
-                    Text("Verify", color = Color(0xFF007AFF), fontWeight = FontWeight.Bold)
+                    Text("Verify", color = c.accentBlack, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
@@ -464,7 +468,7 @@ fun KeypadButton(
                 text = "Forgot?",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFFFF3B30)
+                color = colors.accentBlack
             )
         } else {
             Text(
@@ -480,10 +484,11 @@ fun KeypadButton(
 @Composable
 fun PinVerificationDialog(
     correctPin: String,
+    accentColor: String = "default",
     onDismiss: () -> Unit,
     onCorrectPin: () -> Unit
 ) {
-    val c = rememberSetLockColors()
+    val c = rememberSetLockColors(accentColor)
     var pinInput by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
     val shakeOffset = remember { Animatable(0f) }

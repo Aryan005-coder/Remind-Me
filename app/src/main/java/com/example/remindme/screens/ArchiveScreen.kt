@@ -35,6 +35,8 @@ import com.example.remindme.ui.DashboardViewModel
 import com.example.remindme.ui.SettingsViewModel
 import com.example.remindme.ui.theme.LocalDarkTheme
 import com.example.remindme.screens.PinVerificationDialog
+import com.example.remindme.ui.theme.getActiveAccentColor
+import com.example.remindme.ui.theme.getContrastTextColor
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.draw.blur
@@ -52,6 +54,7 @@ fun ArchiveScreen(
 ) {
     val lockPin by settingsViewModel.lockPin.collectAsState()
     var reminderToVerifyPin by remember { mutableStateOf<RemainderEntity?>(null) }
+    val accentColorState by settingsViewModel.accentColor.collectAsState()
 
     val dark = LocalDarkTheme.current
     val context = LocalContext.current
@@ -59,7 +62,7 @@ fun ArchiveScreen(
     // Colours that match the rest of the app
     val bg       = if (dark) Color(0xFF0D0D0F) else Color(0xFFF2F2F7)
     val card     = if (dark) Color(0xFF1C1C1E) else Color(0xFFFFFFFF)
-    val accent   = Color(0xFF5338D5)
+    val accent   = getActiveAccentColor(accentColorState, dark)
     val textPri  = if (dark) Color(0xFFF5F5F7) else Color(0xFF000000)
     val textMut  = Color(0xFF8E8E93)
     val border   = if (dark) Color(0xFF2C2C2E) else Color(0xFFE5E5EA)
@@ -228,6 +231,7 @@ fun ArchiveScreen(
     if (reminderToVerifyPin != null) {
         PinVerificationDialog(
             correctPin = lockPin ?: "",
+            accentColor = accentColorState,
             onDismiss = { reminderToVerifyPin = null },
             onCorrectPin = {
                 val reminder = reminderToVerifyPin!!
