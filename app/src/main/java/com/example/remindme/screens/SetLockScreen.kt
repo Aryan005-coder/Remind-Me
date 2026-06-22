@@ -26,6 +26,8 @@ import com.example.remindme.ui.theme.LocalDarkTheme
 import com.example.remindme.ui.theme.LocalLanguage
 import com.example.remindme.ui.theme.AppTranslations
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 
 data class SetLockColors(
     val screenBackground: Color,
@@ -79,6 +81,7 @@ enum class PinState {
 @Composable
 fun SetLockScreen(
     viewModel: SettingsViewModel,
+    savedPhone: String,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -96,6 +99,7 @@ fun SetLockScreen(
     var pinInput by remember { mutableStateOf("") }
     var newPinTemp by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
+    var showForgotDialog by remember { mutableStateOf(false) }
     
     // Shake animation for incorrect input
     val shakeOffset = remember { Animatable(0f) }
@@ -273,7 +277,7 @@ fun SetLockScreen(
                     listOf("1", "2", "3"),
                     listOf("4", "5", "6"),
                     listOf("7", "8", "9"),
-                    listOf("", "0", "delete")
+                    listOf("forgot", "0", "delete")
                 )
 
                 buttonRows.forEach { row ->
@@ -282,7 +286,19 @@ fun SetLockScreen(
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         row.forEach { action ->
-                            if (action.isEmpty()) {
+                            if (action == "forgot") {
+                                if (!currentPin.isNullOrEmpty() && pinState == PinState.VERIFY_CURRENT) {
+                                    KeypadButton(
+                                        label = action,
+                                        colors = c,
+                                        onClick = {
+                                            showForgotDialog = true
+                                        }
+                                    )
+                                } else {
+                                    Spacer(modifier = Modifier.size(72.dp))
+                                }
+                            } else if (action.isEmpty()) {
                                 Spacer(modifier = Modifier.size(72.dp))
                             } else {
                                 KeypadButton(
@@ -322,6 +338,102 @@ fun SetLockScreen(
             }
         }
     }
+
+    if (showForgotDialog) {
+        var phoneInput by remember { mutableStateOf("") }
+        var verificationError by remember { mutableStateOf("") }
+
+        AlertDialog(
+            onDismissRequest = { 
+                showForgotDialog = false 
+                verificationError = ""
+                phoneInput = ""
+            },
+            title = {
+                Text(
+                    text = "Verify Phone Number",
+                    fontWeight = FontWeight.Bold,
+                    color = c.textPrimary,
+                    fontSize = 18.sp
+                )
+            },
+            text = {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "To reset your PIN, please enter your registered phone number:",
+                        color = c.textMuted,
+                        fontSize = 14.sp
+                    )
+
+                    OutlinedTextField(
+                        value = phoneInput,
+                        onValueChange = {
+                            phoneInput = it
+                            verificationError = ""
+                        },
+                        placeholder = { Text("Enter phone number") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = verificationError.isNotEmpty(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = c.textPrimary,
+                            unfocusedTextColor = c.textPrimary,
+                            focusedBorderColor = c.accentBlack,
+                            unfocusedBorderColor = c.borderColor,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent
+                        )
+                    )
+
+                    if (verificationError.isNotEmpty()) {
+                        Text(
+                            text = verificationError,
+                            color = c.errorColor,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val cleanInput = phoneInput.replace("[^0-9]".toRegex(), "")
+                        val cleanSaved = savedPhone.replace("[^0-9]".toRegex(), "")
+
+                        if (cleanSaved.isEmpty()) {
+                            verificationError = "No registered phone number found. Please set your phone number in your Profile screen first."
+                        } else if (cleanInput.isNotEmpty() && (cleanInput == cleanSaved || (cleanInput.length >= 10 && cleanSaved.endsWith(cleanInput)) || (cleanSaved.length >= 10 && cleanInput.endsWith(cleanSaved)))) {
+                            Toast.makeText(context, "Phone number verified. Please set a new PIN.", Toast.LENGTH_SHORT).show()
+                            showForgotDialog = false
+                            pinInput = ""
+                            pinState = PinState.ENTER_NEW
+                        } else {
+                            verificationError = "Incorrect phone number. Please try again."
+                        }
+                    }
+                ) {
+                    Text("Verify", color = Color(0xFF007AFF), fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showForgotDialog = false
+                        verificationError = ""
+                        phoneInput = ""
+                    }
+                ) {
+                    Text("Cancel", color = c.textMuted)
+                }
+            },
+            containerColor = c.cardBackground
+        )
+    }
 }
 
 @Composable
@@ -346,6 +458,13 @@ fun KeypadButton(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = colors.textPrimary
+            )
+        } else if (label == "forgot") {
+            Text(
+                text = "Forgot?",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color(0xFF007AFF)
             )
         } else {
             Text(

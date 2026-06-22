@@ -137,6 +137,7 @@ fun AppNavigation(
             composable(Screen.SetLock.route) {
                 SetLockScreen(
                     viewModel = settingsViewModel,
+                    savedPhone = savedPhone,
                     onNavigateBack = { navController.navigateUp() },
                     modifier = Modifier.fillMaxSize()
                 )
