@@ -145,6 +145,88 @@ fun AboutUsScreen(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = c.cardBackground),
+                border = BorderStroke(1.dp, c.borderColor)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = "Development & Mentorship",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = c.textPrimary
+                    )
+
+                    Text(
+                        text = "This application was developed by Aryan Singh under the guidance and mentorship of White Hawk.",
+                        fontSize = 14.sp,
+                        color = c.textPrimary,
+                        lineHeight = 20.sp
+                    )
+
+                    Text(
+                        text = "The primary purpose of this application is to provide a useful and accessible service to its users. This project is a non-profit initiative and has been created solely for educational, developmental, and public-benefit purposes. No financial gain, commercial profit, or monetary benefit is intended or sought through the development or distribution of this application.",
+                        fontSize = 14.sp,
+                        color = c.textPrimary,
+                        lineHeight = 20.sp
+                    )
+
+                    Text(
+                        text = "All efforts have been made to ensure the application is reliable and user-friendly. Feedback and suggestions for improvement are always welcome and will help in enhancing the overall user experience.",
+                        fontSize = 14.sp,
+                        color = c.textPrimary,
+                        lineHeight = 20.sp
+                    )
+
+                    HorizontalDivider(color = c.borderColor, thickness = 1.dp)
+
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Developed by:",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = c.textMuted
+                            )
+                            Text(
+                                text = "Aryan Singh",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = c.textPrimary
+                            )
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Guidance and Mentorship:",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = c.textMuted
+                            )
+                            Text(
+                                text = "White Hawk",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = c.textPrimary
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
