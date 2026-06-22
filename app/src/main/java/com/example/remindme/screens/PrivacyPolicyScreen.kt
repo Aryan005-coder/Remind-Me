@@ -192,7 +192,7 @@ fun PrivacyPolicyScreen(
                     val uriHandler = LocalUriHandler.current
                     val annotatedText = buildAnnotatedString {
                         append("To know more ")
-                        pushStringAnnotation(tag = "URL", annotation = "https://docs.google.com/document/d/13N_c2Z4tC4ePjV6W1N24Qn_gQh8-tG4B3T7wXJ7C8gM/edit?usp=sharing")
+                        pushStringAnnotation(tag = "URL", annotation = "https://docs.google.com/document/d/1iqzmexIrsGATQtk4nSVWmhj7HRvU-sm_gokV_pYPqaQ/edit?tab=t.0")
                         withStyle(style = SpanStyle(color = Color(0xFF007AFF), textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold)) {
                             append("click here")
                         }
