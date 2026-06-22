@@ -186,45 +186,6 @@ fun AboutUsScreen(
                         lineHeight = 20.sp
                     )
 
-                    HorizontalDivider(color = c.borderColor, thickness = 1.dp)
-
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = "Developed by:",
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = c.textMuted
-                            )
-                            Text(
-                                text = "Aryan Singh",
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = c.textPrimary
-                            )
-                        }
-
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = "Guidance and Mentorship:",
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = c.textMuted
-                            )
-                            Text(
-                                text = "White Hawk",
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = c.textPrimary
-                            )
-                        }
-                    }
                 }
             }
         }
