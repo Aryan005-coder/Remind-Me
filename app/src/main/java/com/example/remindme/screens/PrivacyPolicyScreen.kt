@@ -116,7 +116,7 @@ fun PrivacyPolicyScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "BackNote is an offline-first app. We do not collect, store, or transmit any of your personal details to external cloud systems. The recipient phone number, reminder messages, schedules, and attached image file paths are stored strictly on your local device in a secure SQLite database using Room persistence components.",
+                        text = "BackNote is an offline-first app. We do not collect, store, or transmit any of your personal details to external cloud systems. Your reminder messages, schedules, and attached image file paths are stored strictly on your local device in a secure SQLite database using Room persistence components.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp
@@ -132,7 +132,6 @@ fun PrivacyPolicyScreen(
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = "To provide its core functionality, the application may request access to certain device features and permissions.\n\n" +
-                                "• Messaging Services: Used to send reminder messages that have been explicitly scheduled by the user.\n\n" +
                                 "• Scheduling and Background Processing: Used to ensure reminders and alerts are delivered at the time selected by the user, even when the application is not actively open.\n\n" +
                                 "• Notifications: Used to display reminder alerts and other important application-related information.\n\n" +
                                 "• Photos, Media, and Files: Used to allow users to select, attach, view, and manage images associated with reminders.\n\n" +
