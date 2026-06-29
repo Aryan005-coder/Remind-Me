@@ -232,6 +232,7 @@ fun DashboardScreen(
     modifier: Modifier = Modifier
 ) {
     val lockPin by settingsViewModel.lockPin.collectAsState()
+    val localAlarmEnabled by settingsViewModel.localAlarmEnabled.collectAsState()
     var reminderToVerifyPin by remember { mutableStateOf<RemainderEntity?>(null) }
     val accentColorState by settingsViewModel.accentColor.collectAsState()
 
@@ -288,15 +289,6 @@ fun DashboardScreen(
     var showProfileRequiredDialog by remember { mutableStateOf(false) }
     var reminderToSchedule by remember { mutableStateOf<RemainderEntity?>(null) }
 
-    val smsPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            Toast.makeText(context, "SMS permission granted!", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "SMS permission denied. Cannot dispatch reminders.", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
@@ -490,14 +482,14 @@ fun DashboardScreen(
                     } else {
                         Row {
                             Text(
-                                text = AppTranslations.getString("remind", lang),
+                                text = "Back",
                                 fontSize = 34.sp,
                                 fontWeight = FontWeight.Black,
                                 color = c.textPrimary,
                                 letterSpacing = (-1).sp
                             )
                             Text(
-                                text = AppTranslations.getString("me", lang),
+                                text = "Note",
                                 fontSize = 34.sp,
                                 fontWeight = FontWeight.Black,
                                 color = c.textMuted,
@@ -753,8 +745,12 @@ fun DashboardScreen(
                                                     },
                                                     onDelete = { reminderToDelete = reminder },
                                                     onSetAlertClick = {
-                                                        reminderToSchedule = reminder
-                                                        showDateTimePicker = true
+                                                        if (!localAlarmEnabled) {
+                                                            Toast.makeText(context, "Please enable Local Alarm in Settings first!", Toast.LENGTH_LONG).show()
+                                                        } else {
+                                                            reminderToSchedule = reminder
+                                                            showDateTimePicker = true
+                                                        }
                                                     },
                                                     onUpdateReminder = { updated ->
                                                         viewModel.updateReminder(context, updated)
@@ -1173,16 +1169,6 @@ fun DashboardScreen(
                                 onClick = {  // send button
                                     if (savedPhone.isEmpty()) {
                                         showProfileRequiredDialog = true
-                                        return@IconButton
-                                    }
-
-                                    val hasSmsPermission = androidx.core.content.ContextCompat.checkSelfPermission(
-                                        context,
-                                        android.Manifest.permission.SEND_SMS
-                                    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
-
-                                    if (!hasSmsPermission) {
-                                        smsPermissionLauncher.launch(android.Manifest.permission.SEND_SMS)
                                         return@IconButton
                                     }
 
@@ -2786,7 +2772,7 @@ fun exportChatsToEmail(
     archived: List<RemainderEntity>
 ) {
     val builder = StringBuilder()
-    builder.append("REMINDME - CHATS & REMINDERS EXPORT\n")
+    builder.append("BACK NOTE - CHATS & REMINDERS EXPORT\n")
     builder.append("Generated on: ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())}\n")
     builder.append("Recipient Gmail: $email\n")
     builder.append("=========================================\n\n")

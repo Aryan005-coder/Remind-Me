@@ -30,6 +30,7 @@ import com.example.remindme.ui.ProfileViewModel
 import com.example.remindme.ui.SettingsViewModel
 import com.example.remindme.screens.SettingsScreen
 import com.example.remindme.screens.SetLockScreen
+import com.example.remindme.screens.SplashScreen
 
 private val PurplePrimary = Color(0xFF5338D5)
 private val GrayMuted = Color(0xFF9090A5)
@@ -54,9 +55,19 @@ fun AppNavigation(
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = Screen.Splash.route,
             modifier = Modifier.fillMaxSize()
         ) {
+            composable(Screen.Splash.route) {
+                SplashScreen(
+                    onAnimationFinished = {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
             composable(Screen.Home.route) {
                 DashboardScreen(
                     viewModel = dashboardViewModel,

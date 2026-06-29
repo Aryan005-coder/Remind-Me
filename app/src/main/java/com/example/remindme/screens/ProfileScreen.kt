@@ -90,18 +90,11 @@ fun ProfileScreen(
     val lang = LocalLanguage.current
 
     var inputName by remember { mutableStateOf(savedName) }
-    var inputPhone by remember { mutableStateOf(savedPhone) }
     val context = LocalContext.current
-    val devicePhoneNumber = remember(context) { getDevicePhoneNumber(context) }
 
     // Sync input state if saved values update
-    LaunchedEffect(savedName, savedPhone, devicePhoneNumber) {
+    LaunchedEffect(savedName) {
         inputName = savedName
-        if (savedPhone.isEmpty() && !devicePhoneNumber.isNullOrEmpty()) {
-            inputPhone = devicePhoneNumber
-        } else {
-            inputPhone = savedPhone
-        }
     }
 
     Column(
@@ -209,69 +202,15 @@ fun ProfileScreen(
                 )
             }
         }
-
-        // Phone Card
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp),
-            shape = RoundedCornerShape(14.dp),
-            colors = CardDefaults.cardColors(containerColor = c.cardBackground),
-            border = BorderStroke(1.dp, c.borderColor)
-        ) {
-            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
-                Text(
-                    text = AppTranslations.getString("phone_number", lang),
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = c.accentBlack,
-                    letterSpacing = 0.5.sp
-                )
-                BasicTextField(
-                    value = inputPhone,
-                    onValueChange = { inputPhone = it },
-                    textStyle = TextStyle(
-                        color = c.textPrimary,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium
-                    ),
-                    cursorBrush = SolidColor(c.accentBlack),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 6.dp, bottom = 4.dp),
-                    decorationBox = { innerTextField ->
-                        Box(contentAlignment = Alignment.CenterStart) {
-                            if (inputPhone.isEmpty()) {
-                                Text(
-                                    text = AppTranslations.getString("phone_placeholder", lang),
-                                    color = c.textMuted,
-                                    fontSize = 15.sp,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            }
-                            innerTextField()
-                        }
-                    }
-                )
-            }
-        }
-
         Spacer(modifier = Modifier.height(24.dp))
 
         // Save Button (Monochrome Premium styling)
         Button(
             onClick = {
-                val enteredPhoneClean = inputPhone.trim().replace(Regex("[^0-9]"), "")
-                val devicePhoneClean = devicePhoneNumber?.replace(Regex("[^0-9]"), "") ?: ""
-
-                if (inputPhone.isBlank()) {
-                    Toast.makeText(context, AppTranslations.getString("phone_empty", lang), Toast.LENGTH_SHORT).show()
-                } else if (devicePhoneClean.isNotEmpty() && enteredPhoneClean != devicePhoneClean && !devicePhoneClean.endsWith(enteredPhoneClean) && !enteredPhoneClean.endsWith(devicePhoneClean)) {
-                    Toast.makeText(context, "not your phone number", Toast.LENGTH_SHORT).show()
+                if (inputName.isBlank()) {
+                    Toast.makeText(context, "Name cannot be empty!", Toast.LENGTH_SHORT).show()
                 } else {
-                    onSave(inputName.trim(), inputPhone.trim())
+                    onSave(inputName.trim(), "")
                     Toast.makeText(context, AppTranslations.getString("save_success", lang), Toast.LENGTH_SHORT).show()
                 }
             },
@@ -375,14 +314,14 @@ fun ProfileScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = AppTranslations.getString("remind", lang),
+                text = "Back",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Black,
                 color = c.textPrimary,
                 letterSpacing = (-0.5).sp
             )
             Text(
-                text = AppTranslations.getString("me", lang),
+                text = "Note",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Black,
                 color = c.textMuted,
@@ -441,32 +380,3 @@ fun ProfileScreen(
     }
 }
 
-fun getDevicePhoneNumber(context: android.content.Context): String? {
-    try {
-        if (androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_PHONE_NUMBERS) == android.content.pm.PackageManager.PERMISSION_GRANTED ||
-            androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_PHONE_STATE) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                val subscriptionManager = context.getSystemService(android.content.Context.TELEPHONY_SUBSCRIPTION_SERVICE) as? android.telephony.SubscriptionManager
-                val activeList = subscriptionManager?.activeSubscriptionInfoList
-                if (!activeList.isNullOrEmpty()) {
-                    for (info in activeList) {
-                        val num = info.number
-                        if (!num.isNullOrEmpty()) {
-                            return num
-                        }
-                    }
-                }
-            }
-            
-            val telephonyManager = context.getSystemService(android.content.Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
-            val line1Number = telephonyManager?.line1Number
-            if (!line1Number.isNullOrEmpty()) {
-                return line1Number
-            }
-        }
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-    return null
-}

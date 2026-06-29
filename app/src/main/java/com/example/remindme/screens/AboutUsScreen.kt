@@ -99,14 +99,14 @@ fun AboutUsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Remind",
+                            text = "Back",
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Black,
                             color = c.textPrimary,
                             letterSpacing = (-1).sp
                         )
                         Text(
-                            text = "Me",
+                            text = "Note",
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Black,
                             color = c.textMuted,
@@ -122,7 +122,7 @@ fun AboutUsScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "RemindMe is a sleek, offline-first personal reminder assistant designed for productivity and utility. By leveraging precise native scheduling triggers and automated messaging configurations, the app ensures that your custom tasks and notification milestones are met directly from your device.",
+                        text = "BackNote is a sleek, offline-first personal reminder assistant designed for productivity and utility. By leveraging precise native scheduling triggers and automated messaging configurations, the app ensures that your custom tasks and notification milestones are met directly from your device.",
                         fontSize = 14.sp,
                         color = c.textPrimary,
                         lineHeight = 20.sp

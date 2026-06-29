@@ -116,7 +116,7 @@ fun PrivacyPolicyScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "RemindMe is an offline-first app. We do not collect, store, or transmit any of your personal details to external cloud systems. The recipient phone number, reminder messages, schedules, and attached image file paths are stored strictly on your local device in a secure SQLite database using Room persistence components.",
+                        text = "BackNote is an offline-first app. We do not collect, store, or transmit any of your personal details to external cloud systems. The recipient phone number, reminder messages, schedules, and attached image file paths are stored strictly on your local device in a secure SQLite database using Room persistence components.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp

@@ -66,6 +66,26 @@ class SettingsViewModel(context: Context) : ViewModel() {
         }
         _exportEmail.value = email
     }
+
+    private val _localAlarmEnabled = MutableStateFlow(sharedPrefs.getBoolean("app_local_alarm_enabled", false))
+    val localAlarmEnabled: StateFlow<Boolean> = _localAlarmEnabled.asStateFlow()
+
+    fun setLocalAlarmEnabled(enabled: Boolean) {
+        sharedPrefs.edit().putBoolean("app_local_alarm_enabled", enabled).apply()
+        _localAlarmEnabled.value = enabled
+    }
+
+    private val _alarmRingtone = MutableStateFlow(sharedPrefs.getString("app_alarm_ringtone", null))
+    val alarmRingtone: StateFlow<String?> = _alarmRingtone.asStateFlow()
+
+    fun setAlarmRingtone(uriString: String?) {
+        if (uriString == null) {
+            sharedPrefs.edit().remove("app_alarm_ringtone").apply()
+        } else {
+            sharedPrefs.edit().putString("app_alarm_ringtone", uriString).apply()
+        }
+        _alarmRingtone.value = uriString
+    }
 }
 
 class SettingsViewModelFactory(private val context: Context) : ViewModelProvider.Factory {

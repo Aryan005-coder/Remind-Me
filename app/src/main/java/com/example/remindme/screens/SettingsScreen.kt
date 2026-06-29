@@ -32,6 +32,12 @@ import android.widget.Toast
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.graphics.SolidColor
+import android.net.Uri
+import android.media.RingtoneManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import android.app.Activity
+import android.content.Intent
 
 val IconExport: ImageVector
     get() = ImageVector.Builder(
@@ -586,6 +592,148 @@ fun SettingsScreen(
                             fontWeight = FontWeight.Bold,
                             color = if (!exportEmail.isNullOrEmpty()) activeAccentColor else c.textMuted
                         )
+                    }
+                }
+            }
+
+            // Local Alarm Toggle Card
+            val localAlarmEnabled by viewModel.localAlarmEnabled.collectAsState()
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = c.cardBackground),
+                border = BorderStroke(1.dp, c.borderColor)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(
+                            modifier = Modifier.weight(1f).padding(end = 8.dp)
+                        ) {
+                            Text(
+                                text = "LOCAL ALARM",
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = c.textMuted,
+                                letterSpacing = 0.5.sp
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Enable local notifications and reminder alarms",
+                                fontSize = 13.sp,
+                                color = c.textMuted
+                            )
+                        }
+                        Switch(
+                            checked = localAlarmEnabled,
+                            onCheckedChange = { viewModel.setLocalAlarmEnabled(it) },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = Color.White,
+                                checkedTrackColor = activeAccentColor,
+                                uncheckedThumbColor = c.textMuted,
+                                uncheckedTrackColor = c.borderColor
+                            )
+                        )
+                    }
+                }
+            }
+
+            // Alarm Sound Selection Card
+            val alarmRingtone by viewModel.alarmRingtone.collectAsState()
+            val ringtoneName = remember(alarmRingtone) {
+                if (alarmRingtone != null) {
+                    try {
+                        val ringtone = RingtoneManager.getRingtone(context, Uri.parse(alarmRingtone))
+                        ringtone?.getTitle(context) ?: "Custom Sound"
+                    } catch (e: Exception) {
+                        "Custom Sound"
+                    }
+                } else {
+                    "Default Alarm Sound"
+                }
+            }
+
+            val ringtonePickerLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult()
+            ) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val uri = result.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+                    viewModel.setAlarmRingtone(uri?.toString())
+                }
+            }
+
+            if (localAlarmEnabled) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = c.cardBackground),
+                    border = BorderStroke(1.dp, c.borderColor)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    val currentUri = alarmRingtone?.let { Uri.parse(it) }
+                                    val pickerIntent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
+                                        putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM)
+                                        putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Alarm Sound")
+                                        putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, currentUri)
+                                        putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+                                        putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
+                                    }
+                                    ringtonePickerLauncher.launch(pickerIntent)
+                                },
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(
+                                modifier = Modifier.weight(1f).padding(end = 8.dp)
+                            ) {
+                                Text(
+                                    text = "ALARM RINGTONE",
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = c.textMuted,
+                                    letterSpacing = 0.5.sp
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = "Ringtone",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = c.textPrimary
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = ringtoneName,
+                                    fontSize = 13.sp,
+                                    color = c.textMuted
+                                )
+                            }
+                            Text(
+                                text = "Change",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = activeAccentColor
+                            )
+                        }
                     }
                 }
             }

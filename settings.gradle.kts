@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Remind Me"
+rootProject.name = "Back Note"
 include(":app")
  

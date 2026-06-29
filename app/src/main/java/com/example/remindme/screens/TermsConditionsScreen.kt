@@ -109,7 +109,7 @@ fun TermsConditionsScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "By installing and using the RemindMe app, you agree to these terms and conditions. The application is designed to schedule local reminders and dispatch SMS updates using your device's active mobile network configuration.",
+                        text = "By installing and using the BackNote app, you agree to these terms and conditions. The application is designed to schedule local reminders and dispatch SMS updates using your device's active mobile network configuration.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp
@@ -124,7 +124,7 @@ fun TermsConditionsScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "RemindMe dispatches physical SMS notifications through your mobile network plan. You acknowledge that standard SMS rates, messaging costs, and carrier fees apply according to your cellular network plan. RemindMe is not responsible for any carrier charges incurred due to automated SMS reminders.",
+                        text = "BackNote dispatches physical SMS notifications through your mobile network plan. You acknowledge that standard SMS rates, messaging costs, and carrier fees apply according to your cellular network plan. RemindMe is not responsible for any carrier charges incurred due to automated SMS reminders.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp
@@ -154,7 +154,7 @@ fun TermsConditionsScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "In no event shall the developers of RemindMe be liable for any direct, indirect, incidental, or consequential damages resulting from missed notifications, transmission failures, or SMS delivery issues.",
+                        text = "In no event shall the developers of BackNote be liable for any direct, indirect, incidental, or consequential damages resulting from missed notifications, transmission failures, or SMS delivery issues.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp

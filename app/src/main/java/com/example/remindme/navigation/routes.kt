@@ -2,6 +2,7 @@ package com.example.remindme.navigation
 
 sealed class Screen(val route: String) {
     object Home : Screen("home")
+    object Splash : Screen("splash")
     object Profile : Screen("profile")
     object AboutUs : Screen("about_us")
     object PrivacyPolicy : Screen("privacy_policy")
