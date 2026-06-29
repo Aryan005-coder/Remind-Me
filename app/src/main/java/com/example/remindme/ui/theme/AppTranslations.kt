@@ -30,7 +30,7 @@ object AppTranslations {
             "delete_confirm" to "Permanently Delete",
             "cancel" to "Cancel",
             "profile_required_title" to "Profile Required",
-            "profile_required_desc" to "Please set up the recipient name and phone number in the Profile screen to schedule and send reminders.",
+            "profile_required_desc" to "Please set up the recipient name in the Profile screen to schedule reminders.",
             "go_to_profile" to "Go to Profile",
             "select_future_time" to "Please select a future date and time.",
             "set_alert" to "Set Alert",

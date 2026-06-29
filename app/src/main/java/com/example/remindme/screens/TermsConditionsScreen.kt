@@ -109,7 +109,7 @@ fun TermsConditionsScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "By installing and using the BackNote app, you agree to these terms and conditions. The application is designed to schedule local reminders and dispatch SMS updates using your device's active mobile network configuration.",
+                        text = "By installing and using the BackNote app, you agree to these terms and conditions. The application is designed to schedule local reminders and trigger alarm notifications directly on your device.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp
@@ -117,14 +117,14 @@ fun TermsConditionsScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "2. Network and Carrier Charges",
+                        text = "2. Local Reminders and Alarm Processing",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = c.textPrimary
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "BackNote dispatches physical SMS notifications through your mobile network plan. You acknowledge that standard SMS rates, messaging costs, and carrier fees apply according to your cellular network plan. RemindMe is not responsible for any carrier charges incurred due to automated SMS reminders.",
+                        text = "BackNote works entirely offline. Reminders are scheduled locally on your device using Android's AlarmManager features. The application does not send SMS messages or use mobile data to process reminders, ensuring zero carrier charges or messaging costs.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp

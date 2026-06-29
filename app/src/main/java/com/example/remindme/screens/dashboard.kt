@@ -2837,7 +2837,7 @@ fun exportChatsToEmail(
         Intent(Intent.ACTION_SEND_MULTIPLE).apply {
             type = "message/rfc822"
             putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
-            putExtra(Intent.EXTRA_SUBJECT, "RemindMe Exported Chats")
+            putExtra(Intent.EXTRA_SUBJECT, "BackNote Exported Chats")
             putExtra(Intent.EXTRA_TEXT, builder.toString())
             putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris)
             
@@ -2853,7 +2853,7 @@ fun exportChatsToEmail(
         Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
-            putExtra(Intent.EXTRA_SUBJECT, "RemindMe Exported Chats")
+            putExtra(Intent.EXTRA_SUBJECT, "BackNote Exported Chats")
             putExtra(Intent.EXTRA_TEXT, builder.toString())
         }
     }
