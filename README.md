@@ -1,4 +1,4 @@
-# RemindMe 🕰️
+# BackNote 🕰️
 
 **RemindMe** is a premium, offline-first Android application designed for scheduling reminders, sending local alerts, and automating SMS notifications with an emphasis on privacy, security, and clean modern aesthetics.
 
