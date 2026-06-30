@@ -45,7 +45,7 @@ fun AppNavigation(
 ) {
     val navController = rememberNavController()
     
-    // Collect profile states dynamically from the ProfileViewModel
+    
     val savedName by profileViewModel.savedName.collectAsState()
     val savedPhone by profileViewModel.savedPhone.collectAsState()
 

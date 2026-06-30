@@ -128,18 +128,18 @@ import androidx.compose.ui.text.TextStyle
 import android.util.Patterns
 
 
-// ── Adaptive colour palette ────────────────────────────────────────────────
-// All UI colours are resolved at composition time so dark/light mode both
-// get proper, high-contrast visuals.
+
+
+
 
 data class DashboardColors(
     val screenBackground: Color,
     val cardBackground: Color,
-    val accentPrimary: Color,   // main accent (black in light, white in dark)
+    val accentPrimary: Color,   
     val textPrimary: Color,
     val textMuted: Color,
     val borderColor: Color,
-    // Category accent colours (zinc shades, visible on both themes)
+    
     val colorGeneral: Color,
     val colorShopping: Color,
     val colorPlaces: Color,
@@ -153,12 +153,12 @@ fun rememberDashboardColors(accentColor: String): DashboardColors {
     val activeAccent = getActiveAccentColor(accentColor, dark)
     return if (dark) {
         DashboardColors(
-            screenBackground  = Color(0xFF0D0D0F),   // near-black grouped background
-            cardBackground    = Color(0xFF1C1C1E),   // iOS dark card
-            accentPrimary     = activeAccent,   // dynamic pastel accent
+            screenBackground  = Color(0xFF0D0D0F),   
+            cardBackground    = Color(0xFF1C1C1E),   
+            accentPrimary     = activeAccent,   
             textPrimary       = Color(0xFFF5F5F7),
             textMuted         = Color(0xFF8E8E93),
-            borderColor       = Color(0xFF2C2C2E),   // dark separator
+            borderColor       = Color(0xFF2C2C2E),   
             colorGeneral      = activeAccent,
             colorShopping     = Color(0xFFD4D4D8),
             colorPlaces       = Color(0xFFA1A1AA),
@@ -167,9 +167,9 @@ fun rememberDashboardColors(accentColor: String): DashboardColors {
         )
     } else {
         DashboardColors(
-            screenBackground  = Color(0xFFF2F2F7),   // iOS light grouped background
+            screenBackground  = Color(0xFFF2F2F7),   
             cardBackground    = Color(0xFFFFFFFF),
-            accentPrimary     = activeAccent,   // dynamic pastel accent
+            accentPrimary     = activeAccent,   
             textPrimary       = Color(0xFF000000),
             textMuted         = Color(0xFF8E8E93),
             borderColor       = Color(0xFFE5E5EA),
@@ -182,7 +182,7 @@ fun rememberDashboardColors(accentColor: String): DashboardColors {
     }
 }
 
-// Custom implementation of Material ContentCopy icon to avoid external dependencies
+
 val IconContentCopy: ImageVector
     get() = ImageVector.Builder(
         name = "ContentCopy",
@@ -242,29 +242,29 @@ fun DashboardScreen(
     val context = LocalContext.current
     val reminders by viewModel.reminders.collectAsState()
 
-    // Inputs inside scheduler
-    // Using TextFieldValue so we can control the cursor position (TextRange) explicitly
+    
+    
     var message by remember { mutableStateOf(TextFieldValue("")) }
     var selectedDate by remember { mutableStateOf("") }
     var selectedTime by remember { mutableStateOf("") }
     var selectedImageUri by remember { mutableStateOf<String?>(null) }
     var selectedTag by remember { mutableStateOf("General") }
 
-    // List mode toggle – when active, pressing Enter auto-inserts a new "[ ] " item
+    
     var isListMode by remember { mutableStateOf(false) }
 
-    // Search
+    
     var searchQuery by remember { mutableStateOf("") }
     var isSearchActive by remember { mutableStateOf(false) }
 
-    // Categories
+    
     var customCategories by remember { mutableStateOf(loadCustomCategories(context)) }
     var showAddCategoryDialog by remember { mutableStateOf(false) }
     var selectedFilterCategory by remember { mutableStateOf("All") }
 
-    // State to hold reference for item to delete
+    
     var reminderToDelete by remember { mutableStateOf<RemainderEntity?>(null) }
-    // State to hold reference for item to edit
+    
     var reminderToEdit by remember { mutableStateOf<RemainderEntity?>(null) }
     var editMessageText by remember { mutableStateOf("") }
     var zoomedImageUri by remember { mutableStateOf<String?>(null) }
@@ -280,10 +280,10 @@ fun DashboardScreen(
         }
     }
 
-    // State to track crumbling reminders
+    
     val crumblingReminders = remember { mutableStateListOf<Int>() }
 
-    // State to track custom iOS Style Wheel Date & Time Picker visibility
+    
     var showDateTimePicker by remember { mutableStateOf(false) }
 
     var showProfileRequiredDialog by remember { mutableStateOf(false) }
@@ -317,7 +317,7 @@ fun DashboardScreen(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            // Permission granted
+            
         } else {
             Toast.makeText(context, "Permission to record audio was denied.", Toast.LENGTH_SHORT).show()
         }
@@ -412,7 +412,7 @@ fun DashboardScreen(
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                // Polished iOS Large Title Header with Collapsible Search
+                
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -545,7 +545,7 @@ fun DashboardScreen(
                     }
                 }
 
-                // Category filter chips row (top)
+                
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -597,7 +597,7 @@ fun DashboardScreen(
                     }
                 }
 
-                // Reminders Timeline with Buttery-Smooth Animation
+                
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -784,7 +784,7 @@ fun DashboardScreen(
                     }
                 }
 
-                // Floating iMessage-Style Bottom Composer
+                
                 Surface(
                     color = Color.Transparent,
                     modifier = Modifier
@@ -801,7 +801,7 @@ fun DashboardScreen(
                             .navigationBarsPadding()
                             .padding(horizontal = 16.dp, vertical = 14.dp)
                     ) {
-                        // Category Chips Slider with custom categories and Add button
+                        
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -849,7 +849,7 @@ fun DashboardScreen(
                                 }
                             }
 
-                            // Add custom category button (+)
+                            
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(16.dp))
@@ -868,7 +868,7 @@ fun DashboardScreen(
                             }
                         }
 
-                        // Image Preview (Animated)
+                        
                         AnimatedVisibility(
                             visible = selectedImageUri != null,
                             enter = fadeIn(),
@@ -904,7 +904,7 @@ fun DashboardScreen(
                             }
                         }
 
-                        // Audio Preview (Animated)
+                        
                         AnimatedVisibility(
                             visible = recordedAudioPath != null,
                             enter = fadeIn(),
@@ -950,12 +950,12 @@ fun DashboardScreen(
                             }
                         }
 
-                        // Input control bar (iMessage style)
+                        
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.Bottom
                         ) {
-                            // Text composer pill using BasicTextField for full layout control
+                            
                             val listIconTint = if (isListMode) c.accentPrimary else c.textMuted
                             Box(
                                 modifier = Modifier
@@ -979,7 +979,7 @@ fun DashboardScreen(
                                             verticalAlignment = Alignment.CenterVertically,
                                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                                         ) {
-                                            // Pulsing recording dot
+                                            
                                             val infiniteTransition = rememberInfiniteTransition()
                                             val pulseAlpha by infiniteTransition.animateFloat(
                                                 initialValue = 0.3f,
@@ -1007,7 +1007,7 @@ fun DashboardScreen(
                                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-                                            // Cancel/Discard button
+                                            
                                             Text(
                                                 text = "Cancel",
                                                 color = c.textMuted,
@@ -1018,7 +1018,7 @@ fun DashboardScreen(
                                                 }
                                             )
 
-                                            // Stop & Save button
+                                            
                                             IconButton(
                                                 onClick = { stopRecording() },
                                                 modifier = Modifier
@@ -1039,13 +1039,13 @@ fun DashboardScreen(
                                         verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
-                                        // Expandable text area — uses TextFieldValue so cursor
-                                        // position is explicitly set to end after list insertions
+                                        
+                                        
                                         androidx.compose.foundation.text.BasicTextField(
                                             value = message,
                                             onValueChange = { newVal ->
                                                 if (isListMode) {
-                                                    // Detect that a newline was just appended
+                                                    
                                                     val addedNewline = newVal.text.length > message.text.length &&
                                                             newVal.text.endsWith("\n")
                                                     if (addedNewline) {
@@ -1084,7 +1084,7 @@ fun DashboardScreen(
                                             }
                                         )
 
-                                        // List-mode toggle icon
+                                        
                                         Icon(
                                             imageVector = Icons.AutoMirrored.Filled.List,
                                             contentDescription = "Toggle List Mode",
@@ -1097,7 +1097,7 @@ fun DashboardScreen(
                                                 ) {
                                                     isListMode = !isListMode
                                                     if (isListMode) {
-                                                        // Seed the first item; cursor goes to end
+                                                        
                                                         val cur = message.text
                                                         val newText = when {
                                                             cur.isEmpty() -> "[ ] "
@@ -1115,7 +1115,7 @@ fun DashboardScreen(
 
                                         Spacer(modifier = Modifier.width(10.dp))
 
-                                        // Add Photo icon
+                                        
                                         Icon(
                                             imageVector = Icons.Default.Add,
                                             contentDescription = "Add Photo",
@@ -1130,7 +1130,7 @@ fun DashboardScreen(
 
                                         Spacer(modifier = Modifier.width(10.dp))
 
-                                        // Record Audio Icon
+                                        
                                         Icon(
                                             imageVector = Icons.Default.Mic,
                                             contentDescription = "Record Audio",
@@ -1166,7 +1166,7 @@ fun DashboardScreen(
                             )
 
                             IconButton(
-                                onClick = {  // send button
+                                onClick = {  
                                     if (savedPhone.isEmpty()) {
                                         showProfileRequiredDialog = true
                                         return@IconButton
@@ -1211,7 +1211,7 @@ fun DashboardScreen(
                 }
             }
 
-            // Custom Scrollable Date/Time Picker Dialog (iOS Style)
+            
             if (showDateTimePicker) {
                 AlertDialog(
                     onDismissRequest = { 
@@ -1249,8 +1249,8 @@ fun DashboardScreen(
                             }
                             val currentYearVal = currentCal.get(Calendar.YEAR)
                             
-                            // Date States
-                            var yearIdx by remember { mutableStateOf(0) } // Default current year
+                            
+                            var yearIdx by remember { mutableStateOf(0) } 
                             val years = (currentYearVal..(currentYearVal + 5)).map { it.toString() }
                             
                             var monthIdx by remember { mutableStateOf(currentCal.get(Calendar.MONTH)) }
@@ -1268,19 +1268,19 @@ fun DashboardScreen(
                                 val currentDay = currentCal.get(Calendar.DAY_OF_MONTH)
                                 mutableStateOf((currentDay - 1).coerceIn(0, maxDays - 1)) 
                             }
-                            // Adjust day index if it exceeds max days of the selected month
+                            
                             LaunchedEffect(maxDays) {
                                 if (dayIdx >= maxDays) {
                                     dayIdx = maxDays - 1
                                 }
                             }
 
-                            // Time States
+                            
                             val hours = (1..12).map { String.format("%02d", it) }
                             val minutes = (0..59).map { String.format("%02d", it) }
                             val amPm = listOf("AM", "PM")
 
-                            val initialHour = currentCal.get(Calendar.HOUR) // 0-11
+                            val initialHour = currentCal.get(Calendar.HOUR) 
                             val initialHour12 = if (initialHour == 0) 12 else initialHour
                             val initialMin = currentCal.get(Calendar.MINUTE)
                             val initialAmPm = if (currentCal.get(Calendar.AM_PM) == Calendar.AM) 0 else 1
@@ -1289,7 +1289,7 @@ fun DashboardScreen(
                             var minIdx by remember { mutableStateOf(initialMin) }
                             var amPmIdx by remember { mutableStateOf(initialAmPm) }
 
-                            // Date Selection Heading
+                            
                             Text(
                                 text = "DATE",
                                 fontSize = 11.sp,
@@ -1300,7 +1300,7 @@ fun DashboardScreen(
                                     .padding(start = 4.dp, bottom = 6.dp),
                                 letterSpacing = 0.5.sp
                             )
-                            // Date Drums
+                            
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -1334,7 +1334,7 @@ fun DashboardScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            // Time Selection Heading
+                            
                             Text(
                                 text = "TIME",
                                 fontSize = 11.sp,
@@ -1345,7 +1345,7 @@ fun DashboardScreen(
                                     .padding(start = 4.dp, bottom = 6.dp),
                                 letterSpacing = 0.5.sp
                             )
-                            // Time Drums
+                            
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -1377,7 +1377,7 @@ fun DashboardScreen(
                                 )
                             }
 
-                            // Calculate results dynamically
+                            
                             val selectedHour = hours[hourIdx]
                             val selectedMin = minutes[minIdx]
                             val selectedAmPm = amPm[amPmIdx]
@@ -1415,7 +1415,7 @@ fun DashboardScreen(
                 )
             }
 
-            // Custom Category Dialog
+            
             if (showAddCategoryDialog) {
                 var newCategoryName by remember { mutableStateOf("") }
                 var selectedIconName by remember { mutableStateOf("Favorite") }
@@ -1542,7 +1542,7 @@ fun DashboardScreen(
                 )
             }
 
-            // Profile setup warning dialog
+            
             if (showProfileRequiredDialog) {
                 AlertDialog(
                     onDismissRequest = { showProfileRequiredDialog = false },
@@ -1588,7 +1588,7 @@ fun DashboardScreen(
                 )
             }
 
-            // Delete confirmation dialog
+            
             if (reminderToDelete != null) {
                 AlertDialog(
                     onDismissRequest = { reminderToDelete = null },
@@ -1623,7 +1623,7 @@ fun DashboardScreen(
                 )
             }
 
-            // Edit message dialog
+            
             if (reminderToEdit != null) {
                 AlertDialog(
                     onDismissRequest = { reminderToEdit = null },
@@ -1698,7 +1698,7 @@ fun DashboardScreen(
                 )
             }
 
-            // Zoomable Image View Dialog
+            
             if (zoomedImageUri != null) {
                 ZoomableImageDialog(
                     uriString = zoomedImageUri!!,
@@ -1706,7 +1706,7 @@ fun DashboardScreen(
                 )
             }
 
-            // Delete Category confirmation dialog
+            
             showDeleteCategoryDialog?.let { categoryToDelete ->
                 AlertDialog(
                     onDismissRequest = { showDeleteCategoryDialog = null },
@@ -1747,7 +1747,7 @@ fun DashboardScreen(
                 )
             }
 
-            // PIN Verification Dialog for Locked Messages
+            
             if (reminderToVerifyPin != null) {
                 PinVerificationDialog(
                     correctPin = lockPin ?: "",
@@ -1910,7 +1910,7 @@ fun TimelineReminderItem(
                     .padding(10.dp)
                     .then(if (isLocked) Modifier.blur(14.dp) else Modifier)
             ) {
-                // Message Text / Checklist Items with three-dot overflow menu
+                
                 val displayedMessage = remember(reminder.message, isLocked) {
                     if (isLocked) {
                         reminder.message.map { char ->
@@ -1928,7 +1928,7 @@ fun TimelineReminderItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.Top
                 ) {
-                    // Left side: Checklist or text
+                    
                     Box(modifier = Modifier.weight(1f)) {
                         if (hasChecklist) {
                             Column(
@@ -1998,7 +1998,7 @@ fun TimelineReminderItem(
                         }
                     }
 
-                    // Right side: Star button + Three-dot overflow menu
+                    
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -2020,7 +2020,7 @@ fun TimelineReminderItem(
                     }
                 }
 
-                // Optional Image Preview
+                
                 if (!reminder.imageUri.isNullOrEmpty() && !isLocked) {
                     Spacer(modifier = Modifier.height(12.dp))
                     UriImage(
@@ -2036,7 +2036,7 @@ fun TimelineReminderItem(
                     )
                 }
 
-                // Optional Audio Player
+                
                 if (!reminder.audioPath.isNullOrEmpty() && !isLocked) {
                     Spacer(modifier = Modifier.height(12.dp))
                     AudioPlayerView(
@@ -2051,13 +2051,13 @@ fun TimelineReminderItem(
 
                 val isScheduled = reminder.date.isNotEmpty() && reminder.time.isNotEmpty()
 
-                // Bottom strip
+                
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Bottom-left info: Category Icon and time message was written
+                    
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -2082,7 +2082,7 @@ fun TimelineReminderItem(
                         }
                     }
 
-                    // Bottom-right button / duration info
+                    
                     if (isScheduled) {
                         val remainingText = getRemainingDurationString(reminder.date, reminder.time, lang)
                         val isPassed = remainingText == AppTranslations.getString("duration_passed", lang)
@@ -2185,20 +2185,20 @@ fun UriImage(
     enforceAspectRatio: Boolean = false
 ) {
     val context = LocalContext.current
-    // Retrieve cached bitmap if it exists to avoid async loading/flicker
+    
     val cachedBitmap = remember(uriString) { ImageCache.get(uriString) }
     val bitmapState = remember(uriString) { mutableStateOf<androidx.compose.ui.graphics.ImageBitmap?>(cachedBitmap) }
 
     LaunchedEffect(uriString) {
         if (bitmapState.value == null) {
-            // Decode entirely off the main thread — this is the #1 scroll-jank fix
+            
             kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
                 try {
                     val uri = Uri.parse(uriString)
                     val rawBitmap: Bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         val source = ImageDecoder.createSource(context.contentResolver, uri)
-                        // Downsample to max 800px on the longest side — avoids holding huge
-                        // textures for every card, keeping GPU memory and upload time low.
+                        
+                        
                         ImageDecoder.decodeBitmap(source) { decoder, info, _ ->
                             val maxDim = 800
                             val w = info.size.width
@@ -2230,7 +2230,7 @@ fun UriImage(
                     }
                     val imageBitmap = rawBitmap.asImageBitmap()
                     ImageCache.put(uriString, imageBitmap)
-                    // Switch back to main thread only for the state write
+                    
                     kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
                         bitmapState.value = imageBitmap
                     }
@@ -2271,7 +2271,7 @@ private fun formatTimeToDisplay(time: String): String {
     }
 }
 
-// Particle details for Crumbling effect
+
 data class CrumbleParticle(
     val startX: Float,
     val startY: Float,
@@ -2373,7 +2373,7 @@ fun CrumbleWrapper(
     }
 }
 
-// Custom Scrollable vertical WheelPicker Composable (iOS drum style)
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WheelPicker(
@@ -2398,7 +2398,7 @@ fun WheelPicker(
         modifier = modifier.height(180.dp),
         contentAlignment = Alignment.Center
     ) {
-        // Selection indicator lines
+        
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -2412,7 +2412,7 @@ fun WheelPicker(
         LazyColumn(
             state = lazyListState,
             flingBehavior = snapFlingBehavior,
-            contentPadding = PaddingValues(vertical = 69.dp), // Height / 2 - ItemHeight / 2 -> (180 - 42) / 2
+            contentPadding = PaddingValues(vertical = 69.dp), 
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
@@ -2468,11 +2468,11 @@ fun getCategoryIcon(tag: String, customCategories: List<Pair<String, String>> = 
 
 fun getCategoryColor(tag: String, colors: DashboardColors, customCategories: List<Pair<String, String>> = emptyList()): Color {
     val defaultColors = listOf(
-        Color(0xFF6366F1), // Indigo
-        Color(0xFF14B8A6), // Teal
-        Color(0xFFA855F7), // Purple
-        Color(0xFFF97316), // Orange
-        Color(0xFF06B6D4)  // Cyan
+        Color(0xFF6366F1), 
+        Color(0xFF14B8A6), 
+        Color(0xFFA855F7), 
+        Color(0xFFF97316), 
+        Color(0xFF06B6D4)  
     )
     val index = customCategories.indexOfFirst { it.first == tag }
     if (index != -1) {
@@ -2522,7 +2522,7 @@ fun ZoomableImageDialog(
                 .fillMaxSize()
                 .background(Color.Black)
         ) {
-            // Close Button
+            
             IconButton(
                 onClick = onDismiss,
                 modifier = Modifier
@@ -2538,7 +2538,7 @@ fun ZoomableImageDialog(
                 )
             }
 
-            // Zoomable Image Container
+            
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -2615,7 +2615,7 @@ fun AudioPlayerView(
                         stop()
                     }
                 } catch (e: Exception) {
-                    // Ignore
+                    
                 }
                 release()
             }
@@ -2701,7 +2701,7 @@ fun AudioPlayerView(
 
         Spacer(modifier = Modifier.width(6.dp))
 
-        // Progress bar / Slider
+        
         Slider(
             value = if (duration > 0) currentPos.toFloat() / duration.toFloat() else 0f,
             onValueChange = { percent ->
@@ -2815,7 +2815,7 @@ fun exportChatsToEmail(
     builder.append("=========================================\n")
     builder.append("End of Export.\n")
 
-    // Extract and validate readable image attachments (only for non-locked reminders)
+    
     val imageUris = ArrayList<Uri>()
     val activeImages = reminders.filter { !it.isLocked }.mapNotNull { it.imageUri }.filter { it.isNotEmpty() }
     val archivedImages = archived.filter { !it.isLocked }.mapNotNull { it.imageUri }.filter { it.isNotEmpty() }
@@ -2824,7 +2824,7 @@ fun exportChatsToEmail(
     for (uriStr in allImageUris) {
         try {
             val uri = Uri.parse(uriStr)
-            // Attempt to open the stream to verify read permission and existence
+            
             context.contentResolver.openInputStream(uri)?.use {
                 imageUris.add(uri)
             }
@@ -2841,7 +2841,7 @@ fun exportChatsToEmail(
             putExtra(Intent.EXTRA_TEXT, builder.toString())
             putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris)
             
-            // Set ClipData to explicitly propagate URI permissions to other apps
+            
             val clipData = ClipData.newRawUri("Exported Images", imageUris[0])
             for (i in 1 until imageUris.size) {
                 clipData.addItem(ClipData.Item(imageUris[i]))

@@ -38,11 +38,11 @@ fun SplashScreen(
 ) {
     val isDark = LocalDarkTheme.current
 
-    // Animations states
+    
     val scale = remember { Animatable(0.5f) }
     val alpha = remember { Animatable(0f) }
 
-    // Run animations and navigate on finish
+    
     LaunchedEffect(key1 = true) {
         val scaleJob = launch {
             scale.animateTo(
@@ -64,12 +64,12 @@ fun SplashScreen(
         scaleJob.join()
         alphaJob.join()
         
-        // Add a tiny extra delay for seamless user experience
+        
         delay(800)
         onAnimationFinished()
     }
 
-    // Set background gradient matching dark/light mode
+    
     val bgGradient = if (isDark) {
         Brush.verticalGradient(
             colors = listOf(
@@ -97,7 +97,7 @@ fun SplashScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(24.dp)
         ) {
-            // Animating Logo
+            
             Image(
                 painter = painterResource(id = R.drawable.app_logo),
                 contentDescription = stringResource(id = R.string.app_name),
@@ -109,7 +109,7 @@ fun SplashScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // App Name (Back Note)
+            
             Text(
                 text = stringResource(id = R.string.app_name),
                 fontSize = 32.sp,
@@ -123,7 +123,7 @@ fun SplashScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // App Subtitle
+            
             Text(
                 text = "Your Premium Offline Assistant",
                 fontSize = 14.sp,

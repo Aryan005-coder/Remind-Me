@@ -44,18 +44,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Request notification permission on Android 13+ (Tiramisu)
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
             }
         }
 
-        // Initialize database, repository, and ViewModels
+        
         val database = databaseprovider.getDatabase(applicationContext)
         val repository = ReminderRepository(database.reminderDao())
 
-        // Retrieve device ID and store in the database if not present
+        
         val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID) ?: "unknown_device"
         lifecycleScope.launch {
             try {

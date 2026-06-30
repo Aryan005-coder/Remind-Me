@@ -58,7 +58,7 @@ fun StarredScreen(
     val dark = LocalDarkTheme.current
     val context = LocalContext.current
 
-    // Colours that match the rest of the app
+    
     val bg       = if (dark) Color(0xFF0D0D0F) else Color(0xFFF2F2F7)
     val card     = if (dark) Color(0xFF1C1C1E) else Color(0xFFFFFFFF)
     val accent   = getActiveAccentColor(accentColorState, dark)
@@ -68,7 +68,7 @@ fun StarredScreen(
 
     val starred by viewModel.starredReminders.collectAsState()
 
-    // Refresh on first entry
+    
     LaunchedEffect(Unit) { viewModel.loadStarredReminders() }
 
     Scaffold(
@@ -83,7 +83,7 @@ fun StarredScreen(
                 .statusBarsPadding()
                 .navigationBarsPadding()
         ) {
-            // ── Header ──────────────────────────────────────────────────────
+            
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -126,7 +126,7 @@ fun StarredScreen(
 
             HorizontalDivider(color = border, thickness = 0.5.dp)
 
-            // ── List / Empty state ───────────────────────────────────────────
+            
             if (starred.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -183,7 +183,7 @@ fun StarredScreen(
         }
     }
 
-    // PIN Verification Dialog for Locked Messages
+    
     if (reminderToVerifyPin != null) {
         PinVerificationDialog(
             correctPin = lockPin ?: "",
@@ -310,7 +310,7 @@ private fun StarredCard(
                     .padding(10.dp)
                     .then(if (isLocked) Modifier.blur(14.dp) else Modifier)
             ) {
-                // Header: message and star icon (with Checklist support)
+                
                 val displayedMessage = remember(reminder.message, isLocked) {
                     if (isLocked) {
                         reminder.message.map { char ->
@@ -406,13 +406,13 @@ private fun StarredCard(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "Starred",
-                        tint = Color(0xFFFFD700), // Gold Star
+                        tint = Color(0xFFFFD700), 
                         modifier = Modifier.size(20.dp)
                     )
                 }
             }
 
-            // Image (if any)
+            
             if (!reminder.imageUri.isNullOrEmpty() && !isLocked) {
                 Spacer(modifier = Modifier.height(10.dp))
                 UriImage(
@@ -428,7 +428,7 @@ private fun StarredCard(
                 )
             }
 
-            // Audio (if any)
+            
             if (!reminder.audioPath.isNullOrEmpty() && !isLocked) {
                 Spacer(modifier = Modifier.height(10.dp))
                 AudioPlayerView(
@@ -441,7 +441,7 @@ private fun StarredCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Bottom row
+            
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,

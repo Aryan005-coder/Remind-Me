@@ -59,7 +59,7 @@ fun ArchiveScreen(
     val dark = LocalDarkTheme.current
     val context = LocalContext.current
 
-    // Colours that match the rest of the app
+    
     val bg       = if (dark) Color(0xFF0D0D0F) else Color(0xFFF2F2F7)
     val card     = if (dark) Color(0xFF1C1C1E) else Color(0xFFFFFFFF)
     val accent   = getActiveAccentColor(accentColorState, dark)
@@ -69,10 +69,10 @@ fun ArchiveScreen(
 
     val archived by viewModel.archivedReminders.collectAsState()
 
-    // Refresh on first entry
+    
     LaunchedEffect(Unit) { viewModel.loadArchivedReminders() }
 
-    // Per-item delete confirmation state
+    
     var confirmDeleteItem by remember { mutableStateOf<RemainderEntity?>(null) }
 
     Scaffold(
@@ -87,7 +87,7 @@ fun ArchiveScreen(
                 .statusBarsPadding()
                 .navigationBarsPadding()
         ) {
-            // ── Header ──────────────────────────────────────────────────────
+            
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -130,7 +130,7 @@ fun ArchiveScreen(
 
             HorizontalDivider(color = border, thickness = 0.5.dp)
 
-            // ── List / Empty state ───────────────────────────────────────────
+            
             if (archived.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -173,7 +173,7 @@ fun ArchiveScreen(
                             accentColor = accent,
                             textPrimary = textPri,
                             textMuted = textMut,
-                            customCategories = emptyList(), // pass if needed
+                            customCategories = emptyList(), 
                             isLocked = reminder.isLocked,
                             lockPin = lockPin,
                             onUnlockClick = { reminderToVerifyPin = reminder },
@@ -189,7 +189,7 @@ fun ArchiveScreen(
         }
     }
 
-    // ── Permanent delete confirmation dialog ─────────────────────────────────
+    
     confirmDeleteItem?.let { item ->
         AlertDialog(
             onDismissRequest = { confirmDeleteItem = null },
@@ -227,7 +227,7 @@ fun ArchiveScreen(
         )
     }
 
-    // PIN Verification Dialog for Locked Messages
+    
     if (reminderToVerifyPin != null) {
         PinVerificationDialog(
             correctPin = lockPin ?: "",
@@ -370,7 +370,7 @@ private fun ArchiveCard(
                     .padding(10.dp)
                     .then(if (isLocked) Modifier.blur(14.dp) else Modifier)
             ) {
-                // Message (with Checklist support)
+                
                 val displayedMessage = remember(reminder.message, isLocked) {
                     if (isLocked) {
                         reminder.message.map { char ->
@@ -452,7 +452,7 @@ private fun ArchiveCard(
                     }
                 }
 
-            // Image (if any)
+            
             if (!reminder.imageUri.isNullOrEmpty() && !isLocked) {
                 Spacer(modifier = Modifier.height(10.dp))
                 UriImage(
@@ -468,7 +468,7 @@ private fun ArchiveCard(
                 )
             }
 
-            // Audio (if any)
+            
             if (!reminder.audioPath.isNullOrEmpty() && !isLocked) {
                 Spacer(modifier = Modifier.height(10.dp))
                 AudioPlayerView(
@@ -481,7 +481,7 @@ private fun ArchiveCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Bottom row: meta on left, actions on right
+            
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -528,12 +528,12 @@ private fun ArchiveCard(
                     }
                 }
 
-                // Restore + Delete buttons
+                
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Restore button
+                    
                     Box(
                         modifier = Modifier
                             .height(24.dp)
@@ -551,7 +551,7 @@ private fun ArchiveCard(
                         )
                     }
 
-                    // Permanent delete
+                    
                     IconButton(
                         onClick = onDelete,
                         modifier = Modifier.size(34.dp),

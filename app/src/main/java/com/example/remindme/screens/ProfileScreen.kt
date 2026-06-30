@@ -92,7 +92,7 @@ fun ProfileScreen(
     var inputName by remember { mutableStateOf(savedName) }
     val context = LocalContext.current
 
-    // Sync input state if saved values update
+    
     LaunchedEffect(savedName) {
         inputName = savedName
     }
@@ -106,7 +106,7 @@ fun ProfileScreen(
             .imePadding()
             .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
-        // Title Row: Back chevron | Title | Settings cog
+        
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -114,7 +114,7 @@ fun ProfileScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Back button
+            
             IconButton(
                 onClick = onNavigateBack,
                 modifier = Modifier
@@ -156,7 +156,7 @@ fun ProfileScreen(
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // Name Card
+        
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -204,7 +204,7 @@ fun ProfileScreen(
         }
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Save Button (Monochrome Premium styling)
+        
         Button(
             onClick = {
                 if (inputName.isBlank()) {
@@ -233,12 +233,12 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Two side-by-side boxes: Starred and Archive
+        
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Starred Card Box
+            
             Card(
                 modifier = Modifier
                     .weight(1f)
@@ -258,7 +258,7 @@ fun ProfileScreen(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "Starred Messages",
-                        tint = Color(0xFFFFD700), // Gold Star
+                        tint = Color(0xFFFFD700), 
                         modifier = Modifier.size(28.dp)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
@@ -271,7 +271,7 @@ fun ProfileScreen(
                 }
             }
 
-            // Archive Card Box (with box arrow down icon)
+            
             Card(
                 modifier = Modifier
                     .weight(1f)
@@ -307,7 +307,7 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // Monochrome App Logo Footer
+        
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
@@ -337,7 +337,7 @@ fun ProfileScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Clickable Links to Info Screens
+        
         Row(
             modifier = Modifier
                 .fillMaxWidth()

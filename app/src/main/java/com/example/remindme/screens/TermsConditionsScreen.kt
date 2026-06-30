@@ -154,7 +154,7 @@ fun TermsConditionsScreen(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "In no event shall the developers of BackNote be liable for any direct, indirect, incidental, or consequential damages resulting from missed notifications, transmission failures, or SMS delivery issues.",
+                        text = "In no event shall the developers of BackNote  be liable for any direct, indirect, incidental, or consequential damages resulting from missed notifications, transmission failures, or SMS delivery issues.",
                         fontSize = 13.sp,
                         color = c.textMuted,
                         lineHeight = 18.sp

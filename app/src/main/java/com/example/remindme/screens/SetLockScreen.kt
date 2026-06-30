@@ -105,7 +105,7 @@ fun SetLockScreen(
     var errorMessage by remember { mutableStateOf("") }
     var showForgotDialog by remember { mutableStateOf(false) }
     
-    // Shake animation for incorrect input
+    
     val shakeOffset = remember { Animatable(0f) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -142,7 +142,7 @@ fun SetLockScreen(
         PinState.CONFIRM_NEW -> "Confirm New PIN"
     }
 
-    // Handle digit clicks
+    
     fun onDigitClick(digit: String) {
         if (pinInput.length < 4) {
             errorMessage = ""
@@ -179,7 +179,7 @@ fun SetLockScreen(
         }
     }
 
-    // Handle backspace clicks
+    
     fun onBackspaceClick() {
         if (pinInput.isNotEmpty()) {
             errorMessage = ""
@@ -224,7 +224,7 @@ fun SetLockScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Upper status block
+            
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -236,7 +236,7 @@ fun SetLockScreen(
                     color = c.textPrimary
                 )
 
-                // Passcode indicators (circles)
+                
                 Row(
                     modifier = Modifier.offset(x = shakeOffset.value.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -257,7 +257,7 @@ fun SetLockScreen(
                     }
                 }
 
-                // Error message
+                
                 if (errorMessage.isNotEmpty()) {
                     Text(
                         text = errorMessage,
@@ -271,7 +271,7 @@ fun SetLockScreen(
                 }
             }
 
-            // Custom Keypad
+            
             Column(
                 modifier = Modifier.padding(horizontal = 40.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -321,7 +321,7 @@ fun SetLockScreen(
                     }
                 }
 
-                // Clear/Disable PIN Option if already set & verified
+                
                 if (!currentPin.isNullOrEmpty() && pinState == PinState.ENTER_NEW) {
                     Spacer(modifier = Modifier.height(8.dp))
                     TextButton(
@@ -494,7 +494,7 @@ fun PinVerificationDialog(
     val shakeOffset = remember { Animatable(0f) }
     val coroutineScope = rememberCoroutineScope()
 
-    // Keypad clicks
+    
     fun onDigitClick(digit: String) {
         if (pinInput.length < 4) {
             errorMessage = ""
@@ -556,7 +556,7 @@ fun PinVerificationDialog(
                     color = c.textPrimary
                 )
 
-                // Passcode indicators (circles)
+                
                 Row(
                     modifier = Modifier.offset(x = shakeOffset.value.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -584,7 +584,7 @@ fun PinVerificationDialog(
                     Spacer(modifier = Modifier.height(14.dp))
                 }
 
-                // Grid key buttons (compact)
+                
                 val buttonRows = listOf(
                     listOf("1", "2", "3"),
                     listOf("4", "5", "6"),

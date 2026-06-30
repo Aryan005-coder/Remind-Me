@@ -100,7 +100,7 @@ class DashboardViewModel(private val repository: ReminderRepository) : ViewModel
 
     fun archiveReminder(context: Context, reminder: RemainderEntity) {
         viewModelScope.launch {
-            // Cancel any scheduled alarm and mark as archived
+            
             ReminderScheduler.cancel(context, reminder.id)
             repository.insertReminder(reminder.copy(isArchived = true))
             loadReminders()
@@ -122,11 +122,11 @@ class DashboardViewModel(private val repository: ReminderRepository) : ViewModel
         viewModelScope.launch {
             val formattedNumber = formatIndianPhoneNumber(reminder.phone_number)
             val updatedReminder = reminder.copy(phone_number = formattedNumber)
-            // Cancel original schedule
+            
             ReminderScheduler.cancel(context, updatedReminder.id)
-            // Save updated reminder
+            
             repository.insertReminder(updatedReminder)
-            // Schedule the updated reminder
+            
             ReminderScheduler.schedule(
                 context = context,
                 id = updatedReminder.id,

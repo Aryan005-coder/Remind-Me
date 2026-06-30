@@ -40,11 +40,11 @@ object ReminderScheduler {
                 var alarmTime = calendar.timeInMillis
                 val nowTime = System.currentTimeMillis()
                 if (alarmTime <= nowTime) {
-                    // If the time is within the last 60 seconds (current minute scheduler defaults)
+                    
                     if (nowTime - alarmTime <= 60000) {
-                        alarmTime = nowTime + 5000 // Schedule 5 seconds in the future
+                        alarmTime = nowTime + 5000 
                     } else {
-                        // Truly in the past, don't schedule
+                        
                         return
                     }
                 }

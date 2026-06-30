@@ -31,7 +31,7 @@ class ProfileViewModel(private val context: Context) : ViewModel() {
         _savedName.value = name
         _savedPhone.value = phone
 
-        // Map phone number to device ID in the database
+        
         val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID) ?: "unknown_device"
         viewModelScope.launch {
             try {

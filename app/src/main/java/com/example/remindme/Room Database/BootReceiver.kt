@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            // Run in a background coroutine to avoid blocking the broadcast receiver
+            
             val pendingResult = goAsync()
             CoroutineScope(Dispatchers.IO).launch {
                 try {

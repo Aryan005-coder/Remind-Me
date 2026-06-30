@@ -38,7 +38,7 @@ class ReminderReceiver : BroadcastReceiver() {
 
         if (action == "com.example.remindme.ACTION_SNOOZE") {
             notificationManager.cancel(reminderId)
-            // Reschedule alarm for 5 minutes (300,000 ms) in the future
+            
             val snoozeTimeMillis = System.currentTimeMillis() + 5 * 60 * 1000
             ReminderScheduler.schedule(context, reminderId, phoneNumber, message, snoozeTimeMillis)
             return
@@ -72,7 +72,7 @@ class ReminderReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Action Intents for Snooze and Off
+        
         val offIntent = Intent(context, ReminderReceiver::class.java).apply {
             this.action = "com.example.remindme.ACTION_OFF"
             putExtra("id", reminderId)

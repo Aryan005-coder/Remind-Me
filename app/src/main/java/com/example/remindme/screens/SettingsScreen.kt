@@ -53,7 +53,7 @@ val IconExport: ImageVector
             strokeLineCap = androidx.compose.ui.graphics.StrokeCap.Round,
             strokeLineJoin = androidx.compose.ui.graphics.StrokeJoin.Round
         ) {
-            // U-shape tray
+            
             moveTo(5f, 12f)
             lineTo(5f, 18f)
             curveTo(5f, 19.1f, 5.9f, 20f, 7f, 20f)
@@ -61,11 +61,11 @@ val IconExport: ImageVector
             curveTo(18.1f, 20f, 19f, 19.1f, 19f, 18f)
             lineTo(19f, 12f)
 
-            // Up arrow shaft
+            
             moveTo(12f, 15f)
             lineTo(12f, 3f)
 
-            // Arrow head
+            
             moveTo(8f, 7f)
             lineTo(12f, 3f)
             lineTo(16f, 7f)
@@ -175,7 +175,7 @@ fun SettingsScreen(
             .navigationBarsPadding()
             .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
-        // Title Row: Back chevron | Title | Spacer to center
+        
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -183,7 +183,7 @@ fun SettingsScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Back button
+            
             IconButton(
                 onClick = onNavigateBack,
                 modifier = Modifier
@@ -207,7 +207,7 @@ fun SettingsScreen(
                 letterSpacing = (-1).sp
             )
 
-            // Empty spacer to perfectly center the title
+            
             Spacer(modifier = Modifier.size(44.dp))
         }
 
@@ -217,7 +217,7 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(vertical = 16.dp)
         ) {
-            // Theme selection Card
+            
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -268,7 +268,7 @@ fun SettingsScreen(
                 }
             }
 
-            // Pastel Color Palette Selection Card
+            
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -336,7 +336,7 @@ fun SettingsScreen(
                 }
             }
 
-            // Language selection Card
+            
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -410,7 +410,7 @@ fun SettingsScreen(
                 }
             }
 
-            // Font Size selection Card
+            
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -461,7 +461,7 @@ fun SettingsScreen(
                 }
             }
 
-            // Security card
+            
             val isPinSet by viewModel.lockPin.collectAsState()
             val pinStatus = if (!isPinSet.isNullOrEmpty()) "Configured" else "Not Configured"
             Card(
@@ -507,7 +507,7 @@ fun SettingsScreen(
                 }
             }
 
-            // Export Email selection Card
+            
             val exportEmail by viewModel.exportEmail.collectAsState()
             val emailStatus = if (!exportEmail.isNullOrEmpty()) "Configured" else "Not Configured"
             var showEmailDialog by remember { mutableStateOf(false) }
@@ -596,7 +596,7 @@ fun SettingsScreen(
                 }
             }
 
-            // Local Alarm Toggle Card
+            
             val localAlarmEnabled by viewModel.localAlarmEnabled.collectAsState()
 
             Card(
@@ -648,7 +648,7 @@ fun SettingsScreen(
                 }
             }
 
-            // Alarm Sound Selection Card
+            
             val alarmRingtone by viewModel.alarmRingtone.collectAsState()
             val ringtoneName = remember(alarmRingtone) {
                 if (alarmRingtone != null) {
